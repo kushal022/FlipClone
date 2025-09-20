@@ -51,7 +51,7 @@ const catNav = [
 
 const Categories = () => {
     return (
-        <section className=" bg-white min-w-full  sm:px-8 md:px-12 shadow overflow-hidden">
+        <section className=" bg-white mt-8 md:mt-0 min-w-full  sm:px-8 md:px-12 shadow overflow-hidden">
             <div className="flex items-center justify-between sm:max-h-32 overflow-x-scroll no-scrollbar group">
                 {catNav.map((item, i) => (
                     <Link

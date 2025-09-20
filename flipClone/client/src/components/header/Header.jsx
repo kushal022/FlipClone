@@ -19,6 +19,7 @@ import SearchBar from "./SearchBar";
 
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/slices/auth";
+import { AccountDropdown } from "./AccountDropdown";
 
 const Header = () => {
     const dispatch = useDispatch();
@@ -53,25 +54,21 @@ const Header = () => {
     <header>
       <nav
         className="container px-4 md:px-[50px]"
-        // onMouseLeave={}
       >
-        <main className=" flex items-center justify-between gap-3 md:gap-14 w-full flex-col md:flex-row sm:flex-row lg:flex-row">
-          {/* primary div */}
-          <section className=" sm:h-[100px] md:h-[60px] lg:h-[60px] flex items-center justify-between w-[100%] max-w-[650px]">
-            <div className=" flex gap-[20px] items-center w-[100%] flex-col md:flex-row sm:flex-row lg:flex-row">
+        <main className="flex items-center justify-center w-full flex-row ">
+          {/* ---------------------primary section [logo + searchbar] */}
+          <section className=" flex w-full">
+            <div className=" flex items-center gap-4 w-full">
               {/* logo */}
-              <Link to="/">
-                LOGO
-                {/* <img src={logo} alt="logo" className="max-h-fit" /> */}
+              <Link to="/" className="">
+                <img src={logo} alt="logo" className="w-35 lg:w-50" />
               </Link>
-
-              {/* search bar*/}
-              <SearchBar  />
+              <div  className='hidden md:block w-[100%]'><SearchBar /></div>
             </div>
           </section>
 
-          {/* secondary div */}
-          <section className="flex items-center justify-between gap-[50px] w-[70%] mb-4 md:mb-0">
+          {/*---------------- secondary section [account + cart ] */}
+          <section className="flex items-center gap-[25px] md:gap-[50px] w-[70%] md:w-[30%] ">
             {/* Account */}
             <div
               className={`flex items-center relative cursor-pointer group ${
@@ -108,71 +105,7 @@ const Header = () => {
               )}
 
               {/* dropdown menu */}
-              {isDropdownOpen && (
-                <div
-                  className="absolute top-[60px] -left-[2px] z-50 bg-white border border-gray-300 rounded-md p-2 w-[140px] transition-all flex flex-col "
-                >
-                  <ul>
-                    {!user && (
-                      <li className="p-1 hover:bg-slate-100 rounded-md">
-                        <Link
-                          to="/register"
-                          className="flex items-center gap-3"
-                        >
-                          <MdLogin className="text-[14px]" />
-                          <span className="text-[16px]">Sign up</span>
-                        </Link>
-                      </li>
-                    )}
-
-                    <li className="p-1 hover:bg-slate-100 rounded-md">
-                      <Link
-                        to={`${user?.role === 'admin' ? "/admin" : "/user"}/dashboard`}
-                        className="flex items-center gap-3"
-                      >
-                        <AiOutlineUser className="text-[14px]" />
-                        <span className="text-[16px]">My Profile</span>
-                      </Link>
-                    </li>
-
-                    {/* if user is not admin */}
-                    {user?.role !== 'admin' && (
-                      <li className="p-1 hover:bg-slate-100 rounded-md">
-                        <Link 
-                          to="/user/wishlist"
-                          className="flex items-center gap-3"
-                        >
-                          <AiOutlineHeart className="text-[14px]" />
-                          <span className="text-[16px]">Wishlist</span>
-                        </Link>
-                      </li>
-                    )}
-
-                    <li className="p-1 hover:bg-slate-100 rounded-md">
-                      <Link
-                        to={`${user?.role === 'admin' ? "/admin" : "/user"}/orders`}
-                        className="flex items-center gap-3"
-                      >
-                        <BsBox className="text-[14px]" />
-                        <span className="text-[16px]">Orders</span>
-                      </Link>
-                    </li>
-
-                    {user && (
-                      <li className="p-1 hover:bg-slate-100 rounded-md ">
-                        <Link
-                          onClick={handleLogout}
-                          to="/login"
-                          className="flex items-center gap-3"
-                        >
-                          <MdLogout className="text-[14px]" />
-                          <span className="text-[16px]">Logout</span>
-                        </Link>
-                      </li>
-                    )}
-                  </ul>
-                </div>
-              )}
+              {isDropdownOpen && <AccountDropdown user={user} onLogout={handleLogout}/>}
             </div>
 
             {/* cart */}
@@ -193,7 +126,11 @@ const Header = () => {
               </div>
             )}
           </section>
+
         </main>
+          <div className="block md:hidden w-full">
+            <SearchBar/>
+          </div>
       </nav>
     </header>
   );

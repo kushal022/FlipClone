@@ -1,3 +1,6 @@
+
+
+
 /* eslint-disable no-unused-vars */
 import { useState, useRef, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
@@ -53,18 +56,16 @@ const Header = () => {
   return (
     <header>
       <nav
-        className="container px-4 md:px-[50px]"
+        className="h-15 px-4 md:px-[50px] w-full"
       >
         <main className="flex items-center justify-center w-full flex-row ">
           {/* ---------------------primary section [logo + searchbar] */}
-          <section className=" flex w-full">
-            <div className=" flex items-center gap-4 w-full">
+          <section className=" flex items-center gap-4 w-full">
               {/* logo */}
-              <Link to="/" className="">
-                <img src={logo} alt="logo" className="w-35 lg:w-50" />
+              <Link to="/" className="w-60 h-15 flex items-center justify-center">
+                <img src={logo} alt="logo" className="size-30 md:size-40" />
               </Link>
               <div  className='hidden md:block w-[100%]'><SearchBar /></div>
-            </div>
           </section>
 
           {/*---------------- secondary section [account + cart ] */}
@@ -128,7 +129,7 @@ const Header = () => {
           </section>
 
         </main>
-          <div className="block md:hidden w-full">
+          <div className="block md:hidden w-full ">
             <SearchBar/>
           </div>
       </nav>

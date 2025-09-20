@@ -9,6 +9,7 @@ import beauty from "../../assets/images/Categories/beauty.png";
 import grocery from "../../assets/images/Categories/grocery.png";
 import { Link } from "react-router-dom";
 
+// Categories navigation
 const catNav = [
     {
         name: "Mobiles",
@@ -50,8 +51,8 @@ const catNav = [
 
 const Categories = () => {
     return (
-        <section className="hidden sm:block bg-white p-0 min-w-full px-12 shadow overflow-hidden">
-            <div className="flex items-center justify-between group">
+        <section className=" bg-white min-w-full  sm:px-8 md:px-12 shadow overflow-hidden">
+            <div className="flex items-center justify-between sm:max-h-32 overflow-x-scroll no-scrollbar group">
                 {catNav.map((item, i) => (
                     <Link
                         to={`/products?category=${item.name}`}

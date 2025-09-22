@@ -27,8 +27,8 @@ const authSlice = createSlice({
   reducers: {
     setAuth: (state, action) => {
       state.user = action.payload.user;
-      state.token = action.payload.token;
-      state.isAdmin = action.payload.user?.role === 1;
+      state.token = action.payload.accessToken;
+      state.isAdmin = action.payload.user?.role === 'admin';
       Cookies.set("auth", JSON.stringify(action.payload));
     },
     logout: (state) => {
@@ -36,6 +36,7 @@ const authSlice = createSlice({
       state.token = "";
       state.isAdmin = false;
       Cookies.remove("auth");
+      Cookies.remove("token");
       toast.success("Logged out Successfully!", { toastId: "LogOut" });
     },
   },

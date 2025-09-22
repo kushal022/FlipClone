@@ -7,11 +7,22 @@
 @layer base {
     section {
         @apply py-[75px];
-    }
-}
-
-@layer components {
-    .container {
-        @apply px-5 max-w-[100vw];
+        @apply py-[10px];
     }
 } */
+
+/* @layer components {
+    .container {
+        @apply  max-w-[100vw];
+    }
+} */
+
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

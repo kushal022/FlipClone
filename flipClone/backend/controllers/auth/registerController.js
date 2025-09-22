@@ -5,14 +5,14 @@ import { createError } from '../../middleware/errorHandler.js';
 
 export const registerController = async (req, res, next) => {
   try {
-    const { fname, email, phone, password, addresses, role } = req.body;
-
+    const { fname, lname, email, phone, password, address, role } = req.body;
+    console.log(req.body);
     // ✅ Validations
     if (!fname) return response(res, 400, {success: false, message: "Name is required", errorType: "Invalid Credential"});
     if (!email) return response(res, 400, {success: false, message: "Email is required", errorType: "Invalid Credential"});
     if (!password) return response(res, 400, {success: false, message: "Password is required", errorType: "Invalid Credential"}); 
     if (!phone) return response(res, 400, {success: false, message: "Phone number is required", errorType: "Invalid Credential"});
-    if (!Array.isArray(addresses) || addresses.length === 0)
+    if (!address)
       return response(res, 400, {success: false, message: "Address is required", errorType: "Invalid Credential"});
     
     // if (!name) return next(createError(400, "Name is required"));
@@ -39,11 +39,12 @@ export const registerController = async (req, res, next) => {
 
     // ✅ Create user
     const user = new userModel({
-      name,
+      fname,
+      lname,
       email,
       phone,
       password: hashedPassword,
-      addresses,
+      addresses: address,
       role,
     });
 
@@ -53,6 +54,7 @@ export const registerController = async (req, res, next) => {
     const userResponse = user.toObject();
     delete userResponse.password;
 
+    console.log(`New User ${fname} ${lname} is Registered`);
     return response(res, 201, {
       success: true,
       message: "User registered successfully!",

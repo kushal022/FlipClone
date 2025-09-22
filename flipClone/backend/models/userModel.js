@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
 
     addresses: [
       {
-        label: { type: String, enum: ["Home", "Work", "Other"], default: "Home" },
+        label: { type: String, enum: ["home", "work", "other"], default: "Home" },
         street: String,
         city: String,
         state: String,

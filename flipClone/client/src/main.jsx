@@ -7,6 +7,9 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // make sure to import this!
 import store from "./store/store.js";
 import { Provider } from "react-redux";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 
 createRoot(document.getElementById("root")).render(
   // <StrictMode>

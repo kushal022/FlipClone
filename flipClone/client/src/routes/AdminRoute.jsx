@@ -1,6 +1,4 @@
-/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
-// import { useAuth } from "../context/auth";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../components/Spinner";
@@ -9,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 const AdminRoute = () => {
     const [ok, setOk] = useState(false);
-    // const { auth, setAuth, LogOut, isAdmin, isContextLoading } = useAuth();
     const { user, isAdmin, isLoading, token } = useSelector(state => state.auth)
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -32,7 +29,6 @@ const AdminRoute = () => {
                 console.log(error);
 
                 if (error.response?.status === 401 && !isLoading) {
-                    // When isContextLoading becomes false, it means the context has been loaded
                     setTimeout(() => {
                         toast.error("Admin Privileges Required!", {
                             toastId: "userNotAdmin",

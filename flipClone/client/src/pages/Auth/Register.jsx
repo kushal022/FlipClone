@@ -70,7 +70,7 @@ const Register = () => {
           phone,
           password,
           address,
-          role: isSeller ? "seller" : "customer",
+          role: isSeller ? "admin" : "customer",
         }
       );
       console.log(response.data);

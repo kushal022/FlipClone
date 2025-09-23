@@ -1,8 +1,11 @@
 import React from 'react'
+import ComingSoon from '../ComingSoon'
 
 const Deactivate = () => {
   return (
-    <div>Deactivate</div>
+    <div>
+      <ComingSoon/>
+    </div>
   )
 }
 

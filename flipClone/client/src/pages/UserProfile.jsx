@@ -85,18 +85,9 @@ const UserProfile = () => {
 
       response.data.success === false && 
         toast.error(response.data.message);
-    //   setAuth({
-    //     ...auth,
-    //     user: {
-    //       ...auth.user,
-    //       email: email,
-    //     },
-    //   });
 
       // localStorage.removeItem("auth");
       // localStorage.setItem("auth", JSON.stringify(response.data));
-
-    //   toast.success(response.data.message);
     } catch (error) {
       console.log(error);
     }
@@ -126,17 +117,8 @@ const UserProfile = () => {
       response.data.success === false && 
         toast.error(response.data.message);
       
-    //     setAuth({
-    //     ...auth,
-    //     user: {
-    //       ...auth.user,
-    //       phone: phone,
-    //     },
-    //   });
     //   localStorage.removeItem("auth");
     //   localStorage.setItem("auth", JSON.stringify(response.data));
-
-    //   toast.success(response.data.message);
     } catch (error) {
       console.error("Error:", error);
       //user not found
@@ -337,7 +319,7 @@ const UserProfile = () => {
 
         {/* deactivate account */}
         <div className="text-[14px] text-blue-500 font-[500] mt-4 -mb-4">
-          <Link to="./deactivate">Deactivate Account</Link>
+          <Link to="/admin/dashboard/profile/deactivate">Deactivate Account</Link>
         </div>
       </div>
 

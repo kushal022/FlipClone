@@ -14,11 +14,11 @@ import { GiHamburgerMenu } from "react-icons/gi";
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
-    const [isMenuOpen, setIsMenuOpen] = useState(false); // State to manage menu visibility
+    const [isMenuOpen, setIsMenuOpen] = useState(false); 
 
     useEffect(() => {
         if (window.location.pathname === "/admin/dashboard") {
-            navigate("./profile");
+            navigate("/admin/dashboard/profile");
         }
     }, [navigate]);
 

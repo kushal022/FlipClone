@@ -1,19 +1,8 @@
-import React from 'react'
+
+import ComingSoon from "./ComingSoon";
 
 const AddressComponent = () => {
-  return (
-    <div>AddressComponent</div>
-  )
-}
+    return <ComingSoon />;
+};
 
-export default AddressComponent
-
-
-
-// import ComingSoon from "./ComingSoon";
-
-// const AddressComponent = () => {
-//     return <ComingSoon />;
-// };
-
-// export default AddressComponent;
+export default AddressComponent;

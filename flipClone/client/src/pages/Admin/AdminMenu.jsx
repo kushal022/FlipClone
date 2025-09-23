@@ -9,7 +9,6 @@ import { logout } from "../../redux/slices/auth";
 
 
 const AdminMenu = ({ toggleMenu }) => {
-    // const { auth, setAuth, LogOut } = useAuth();
     const { user} = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -124,7 +123,8 @@ const AdminMenu = ({ toggleMenu }) => {
                                 Orders
                             </div>
                         </NavLink>
-
+                        
+                        {/* get all products of seller/admin */}
                         <NavLink
                             to="./all-products"
                             onClick={scrollToTop}
@@ -138,7 +138,7 @@ const AdminMenu = ({ toggleMenu }) => {
                                 Products
                             </div>
                         </NavLink>
-
+                        {/* crete new product */}
                         <NavLink
                             // to="./add-product"
                             to="/admin/dashboard/add-product"
@@ -153,8 +153,9 @@ const AdminMenu = ({ toggleMenu }) => {
                                 Add Product
                             </div>
                         </NavLink>
-
-                        <NavLink
+                        
+                        {/* Users */}
+                        {/* <NavLink
                             to="./users"
                             onClick={scrollToTop}
                             className={({ isActive }) =>
@@ -166,7 +167,7 @@ const AdminMenu = ({ toggleMenu }) => {
                             <div className=" h-[40px] px-[60px] flex items-center hover:text-primaryBlue hover:bg-[#f1f3f5]">
                                 Users
                             </div>
-                        </NavLink>
+                        </NavLink> */}
                     </div>
                 </div>
 

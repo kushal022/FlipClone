@@ -11,7 +11,6 @@ import Deactivate from "../Auth/Deactivate";
 import EditProduct from "./EditProduct";
 import { useEffect, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
-// import SeoData from "../../SEO/SeoData";
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
@@ -19,7 +18,7 @@ const AdminDashboard = () => {
 
     useEffect(() => {
         if (window.location.pathname === "/admin/dashboard") {
-            // navigate("./profile");
+            navigate("./profile");
         }
     }, [navigate]);
 
@@ -29,7 +28,6 @@ const AdminDashboard = () => {
 
     return (
         <>
-            {/* <SeoData title="Admin Dashboard" /> */}
             <div className="py-[5px] h-full">
                 <div className="flex items-start justify-between text-[14px] h-full px-2 sm:px-[50px] py-2 sm:py-[40px] gap-5">
                     <div

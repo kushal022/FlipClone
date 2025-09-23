@@ -55,18 +55,18 @@ const AdminDashboard = () => {
                             {isMenuOpen ? "Close" : <GiHamburgerMenu />}
                         </button>
                         <Routes>
-                            {/* <Route path="" element={<UserProfile />} />
+                            <Route path="" element={<UserProfile />} />
                             <Route path="profile" element={<UserProfile />} />
                             <Route
                                 path="address"
                                 element={<AddressComponent />}
                             />
-                            <Route path="pan" element={<PanCardComponent />} /> */}
+                            <Route path="pan" element={<PanCardComponent />} />
                             <Route
                                 path="add-product"
                                 element={<CreateProduct />}
                             />
-                            {/* <Route
+                            <Route
                                 path="all-products"
                                 element={<AllProducts />}
                             />
@@ -78,7 +78,7 @@ const AdminDashboard = () => {
                             <Route
                                 path="product/:productId"
                                 element={<EditProduct />}
-                            /> */}
+                            />
                         </Routes>
                     </div>
                 </div>

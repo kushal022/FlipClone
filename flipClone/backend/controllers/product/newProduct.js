@@ -2,10 +2,10 @@ import productModel from "../../models/productModel.js";
 import cloudinary from "cloudinary";
 import { response } from "../../utils/response.js";
 import { createError } from "../../middleware/errorHandler.js";
-
+ 
 // New Product Controller:
 const newProduct = async (req, res, next ) => {
-    console.log('new Product add req: --', req.body);
+    console.log('new Product add req: --', req.body); 
     try {
         // Handle Images:
         let images = [];

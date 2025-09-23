@@ -5,10 +5,15 @@ import { response } from "../../utils/response.js";
 // Get Filtered Products Controller:
 const getFilteredProducts = async (req, res, next) => {
     try {
+        console.log('in filtered product: ',req.query);
         // Extract parameters from the request query
         const { category, priceRange, ratings } = req.query;
+        console.log('category, priceRange, ratings: ',category, priceRange, ratings);
 
+        // get all products from database;
         let products = await productModel.find({}).sort({ createdAt: -1 });
+        
+        // Apply filters based on the provided parameters
         if (category) {
             products = products.filter(
                 (product) => product.category === category
@@ -37,7 +42,7 @@ const getFilteredProducts = async (req, res, next) => {
                 errorType: "productNotFound",
             });
         }
-        return response(res, 200, { success: true, products });
+        return response(res, 200, { success: true, data:products });
     } catch (error) {
         next(createError(500, error, "Error in getting Filtered Products"))
     }

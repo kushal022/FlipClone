@@ -43,7 +43,7 @@ export const loginController = async (req, res, next) => {
         //TOKEN
         
         const payload = { _id: user._id }
-        const accessToken = await generateAccessToken(payload, '1h'); // ShortTerm
+        const accessToken = await generateAccessToken(payload); // ShortTerm
         const refreshToken = await generateRefreshToken(payload); // longTerm
 
         user.refreshToken = refreshToken;

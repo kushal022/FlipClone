@@ -63,7 +63,7 @@ const Header = () => {
           <section className=" flex items-center gap-4 w-full">
               {/* logo */}
               <Link to="/" className="w-60 h-15 flex items-center justify-center">
-                <img src={logo} alt="logo" className="size-30 md:size-40 object-cover" />
+                {/* <img src={logo} alt="logo" className="size-30 md:size-40 object-cover" /> */}LOGO
               </Link>
               <div  className='hidden md:block w-[100%]'><SearchBar /></div>
           </section>

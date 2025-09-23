@@ -21,6 +21,7 @@ const Login = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const location = useLocation();
 
+
     const handlePasswordToggle = () => {
         setShowPassword(!showPassword);
     };
@@ -28,6 +29,7 @@ const Login = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        // console.log('Isadmin: ', isAdmin)
         if (token) {
             isAdmin
                 ? navigate("/admin/dashboard")
@@ -51,11 +53,11 @@ const Login = () => {
             const { data } = response;
             if (response.status === 200 && data.success === true) {
                 toast.success("Logged in Successfully!");
-                dispatch(setAuth(data.data));
-                Cookies.set("auth", JSON.stringify(response.data.data), {
-                    expires: 7,  
-                });
-                Cookies.set("token", JSON.stringify(response.data.accessToken), {
+                dispatch(setAuth(data));
+                Cookies.set("auth", JSON.stringify({
+                    user: data.data,
+                    token: data.accessToken
+                }), {
                     expires: 7,  
                 });
                 navigate(location.state || "/");

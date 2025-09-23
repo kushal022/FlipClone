@@ -81,8 +81,8 @@ const Header = () => {
               {user ? (
                 <div className="flex items-center gap-1 ">
                   <AiOutlineUser className="text-[22px] " />
-                  <span className="text-[18px] max-w-fit hidden md:block lg:block ">
-                    <p>{user.name.split(" ")[0] || "user name"}</p>
+                  <span className="text-[18px] capitalize max-w-fit hidden md:block lg:block ">
+                    <p>{user.fname || "user name"} {user.lname}</p>
                   </span>
                   <span>
                     <RiArrowDropDownLine className="group-hover:rotate-[180deg] transition-all " />
@@ -117,7 +117,7 @@ const Header = () => {
                   className="relative flex items-center gap-1"
                 >
                   <span className="absolute w-4 h-4 text-[11px] text-center font-semibold left-2 bottom-3 text-white bg-red-500 rounded-[50%] ">
-                    {/* {cartItems?.length} */}{user?.cart.length || 0}
+                    {/* {cartItems?.length} */}{user?.cart?.length || 0}
                   </span>
                   <BsCart2 className="text-[22px]" />
                   <span className="hidden md:block lg:block group-hover:text-slate-700">

@@ -19,7 +19,7 @@ const findProduct = async (req, res, next) => {
             response(res, 201, {
                 success: true,
                 message: "Product Fetched Successfully",
-                product: product,
+                data: product,
             });
     } catch (error) {
         next(createError(500, error, "Error in Finding Product"))

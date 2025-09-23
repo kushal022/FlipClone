@@ -19,17 +19,21 @@ if (savedAuth) {
 }
 initialState.isLoading = false;
 
-// Create Auth Slice:
+//*&-------------- Create Auth Slice:------------------------
 const authSlice = createSlice({
   name: "auth",
   initialState,
   
   reducers: {
     setAuth: (state, action) => {
-      state.user = action.payload.user;
+      // console.log('Setting auth in redux:', action.payload);
+      state.user = action.payload.data;
       state.token = action.payload.accessToken;
-      state.isAdmin = action.payload.user?.role === 'admin';
-      Cookies.set("auth", JSON.stringify(action.payload));
+      state.isAdmin = action.payload.data?.role === 'admin';
+      Cookies.set("auth", JSON.stringify({
+        user: action.payload.data,
+        token: action.payload.accessToken
+      }), { expires: 7});
     },
     logout: (state) => {
       state.user = null;

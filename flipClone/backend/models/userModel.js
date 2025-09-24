@@ -43,12 +43,12 @@ const userSchema = new mongoose.Schema(
     },
 
     wishlist: [{ type: mongoose.Schema.ObjectId, ref: "Product" }],
-     cart: [
-      {
-        product: { type: mongoose.Schema.ObjectId, ref: "Product", required: true },
-        quantity: { type: Number, default: 1, min: 1 },
-      }
-    ],
+    //  cart: [
+    //   {
+    //     product: { type: mongoose.Schema.ObjectId, ref: "Product", required: true },
+    //     quantity: { type: Number, default: 1, min: 1 },
+    //   }
+    // ],
      avatar: { type: String },
 
     refreshToken: String,

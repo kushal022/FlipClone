@@ -48,9 +48,9 @@ const AdminDashboard = () => {
                     >
                         <button
                             onClick={toggleMenu}
-                            className="sm:hidden text-blue-400 underline rounded px-2 text-lg py-2"
+                            className="sm:hidden text-blue-500 underline rounded px-2 text-lg py-2"
                         >
-                            {isMenuOpen ? "Close" : <GiHamburgerMenu />}
+                            {isMenuOpen ? "Close" : <GiHamburgerMenu />} 
                         </button>
                         <Routes>
                             <Route path="" element={<UserProfile />} />

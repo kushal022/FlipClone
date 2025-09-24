@@ -4,7 +4,6 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
-// import SeoData from "../../SEO/SeoData";
 import Spinner from "./../../components/Spinner";
 import Product from "../../components/ProductListing/Product";
 import SideFilter from "../../components/ProductListing/SideFilter";

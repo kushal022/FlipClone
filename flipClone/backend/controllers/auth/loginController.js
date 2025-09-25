@@ -43,7 +43,7 @@ export const loginController = async (req, res, next) => {
         //TOKEN
         
         const payload = { _id: user._id }
-        const accessToken = await generateAccessToken(payload, '1h'); // ShortTerm
+        const accessToken = await generateAccessToken(payload); // ShortTerm
         const refreshToken = await generateRefreshToken(payload); // longTerm
 
         user.refreshToken = refreshToken;
@@ -53,15 +53,16 @@ export const loginController = async (req, res, next) => {
         res.status(200).json({
             success: true,
             message: "Logged in Successfully!",
+            accessToken,
             data: {
                 _id: user._id,
-                name: user.name,
+                fname: user.fname,
+                lname: user.lname,
                 email: user.email,
                 phone: user.phone,
-                address: user.address,
+                address: user.addresses,
                 role: user.role,
             },
-            accessToken,
         });
     } catch (error) {
         next(createError(500,error, '‼️Error in Login'))

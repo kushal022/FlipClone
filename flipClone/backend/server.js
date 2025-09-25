@@ -1,13 +1,14 @@
 import express from "express";
-import dotenv from "dotenv";
-import morgan from "morgan";
 import cors from "cors";
-import { v2 as cloudinary } from "cloudinary";
+import dotenv from "dotenv";
 import bodyParser from "body-parser";
-import fileUpload from "express-fileupload";
-import { fileURLToPath } from "url";
 import { dirname } from "path";
 import path from "path";
+
+import morgan from "morgan";
+import { v2 as cloudinary } from "cloudinary";
+import fileUpload from "express-fileupload";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -16,8 +17,9 @@ const __dirname = dirname(__filename);
 import connectDB from "./config/database.js";
 import { createError, errorHandler } from "./middleware/errorHandler.js";
 import authRoute from "./routes/authRoute.js";
-// import productRoute from "./routes/productRoute.js";
-// import userRoute from "./routes/userRoute.js";
+import productRoute from "./routes/productRoute.js";
+import cartRoute from './routes/cartRoute.js'
+import userRoute from "./routes/userRoute.js";
 
 const app = express();
 
@@ -57,8 +59,9 @@ app.get("/", (req, res) => {
 
 //routes
 app.use("/api/v1/auth", authRoute);
-// app.use("/api/v1/product", productRoute);
-// app.use("/api/v1/user", userRoute);
+app.use("/api/v1/product", productRoute);
+app.use("/api/v1/cart", cartRoute);
+app.use("/api/v1/user", userRoute);
 
 
 app.use((req, res, next) => {

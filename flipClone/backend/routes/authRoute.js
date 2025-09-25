@@ -7,6 +7,7 @@ import { createError } from "../middleware/errorHandler.js";
 import { updateDetailsController } from "../controllers/auth/updateDetailsController.js";
 import { deactivateController } from "../controllers/auth/deactivateAccount.js";
 import { isAdmin, requireSignIn } from "../middleware/authMiddleware.js";
+import { response } from "../utils/response.js";
 
 //router object
 const router = express.Router();
@@ -33,9 +34,10 @@ router.post("/deactivate", deactivateController);
 //protected route-user
 router.get("/user-auth", requireSignIn, (req, res, next) => {
     try {
-        res.status(200).send({
-            ok: true,
-        });
+        response(res, 200, {
+            success: true,
+            message: "User access granted"
+        })
     } catch (error) {
         next(createError(500, error, "Error in Costumer authentication for protected routes"))
     }
@@ -44,8 +46,9 @@ router.get("/user-auth", requireSignIn, (req, res, next) => {
 //protected Admin route
 router.get("/admin-auth", isAdmin, (req, res, next) => {
     try {
-        res.status(200).send({
-            ok: true,
+        response(res, 200, {
+            success: true,
+            message: "Admin access granted",
         });
     } catch (error) {
         next(createError(500, error, "Error in Admin authentication for protected routes"))

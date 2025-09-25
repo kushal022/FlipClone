@@ -2,46 +2,54 @@ import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
 import UserModel from "../models/userModel.js";
 import { response } from "../utils/response.js";
+import { createError } from "./errorHandler.js";
 
+// for users with role 'customer
 const requireSignIn = asyncHandler(async (req, res, next) => {
     try {
-        const token = req.headers.authorization;
+        const token = req.headers.authorization.split(" ")[1];
 
         if (!token) {
             return response(res, 401, { success: false, message: "Token must be provided"})
         }
 
         // Verify Token | ACCESS TOKEN
-        const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+        const decoded = await jwt.verify(token, process.env.JWT_ACCESS_SECRET);
         
         // Attach user information to the request
         req.user = await UserModel.findById(decoded._id);
 
-        if (!req.user || req.user.role !== 0) {
+        if (!req.user || req.user.role !== 'customer') {
             return response(res, 401, { success: false, message: "Unauthorized User"})
         }
         next();
     } catch (error) {
-        next(error)
+        next(createError(500, error, "Server Error in User Auth"))
     }
 });
 
+// for users with role 'admin
 const isAdmin = asyncHandler(async (req, res, next) => {
     try {
-        const token = req.headers.authorization;
-
+        const token = req.headers.authorization.split(" ")[1];
          if (!token) {
             return response(res, 401, { success: false, message: "Token must be provided"})
         }
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        // console.log(decoded);
+        // Verify Token | ACCESS TOKEN
+        const decoded = await jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+        if( !decoded ) {
+            return response(res, 401, {
+                success: false,
+                message: "Invalid or expired token"
+            })
+        }
 
         // Attach user information to the request
         req.user = await UserModel.findById(decoded._id);
         // console.log(req.user);
 
-        if (!req.user || req.user.role !== 1) { // admin = 1;
+        if (!req.user || req.user.role !== 'admin') { // admin = 1;
             return response(res, 403, {
                 success: false,
                 message: "Access denied. Admin privileges required." ,
@@ -49,7 +57,7 @@ const isAdmin = asyncHandler(async (req, res, next) => {
         }
         next();
     } catch (error) {
-        next(error)
+        next(createError(500, error, "Server Error in Admin Auth"))
     }
 });
 

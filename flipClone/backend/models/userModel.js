@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
 
     addresses: [
       {
-        label: { type: String, enum: ["Home", "Work", "Other"], default: "Home" },
+        label: { type: String, enum: ["home", "work", "other"], default: "Home" },
         street: String,
         city: String,
         state: String,
@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema(
       },
     ],
 
-    role: { type: String, enum: ["customer", "seller", "admin"], default: "customer" },
+    role: { type: String, enum: ["customer", "admin"], default: "customer" },
 
     pan: {
       number: {
@@ -43,12 +43,12 @@ const userSchema = new mongoose.Schema(
     },
 
     wishlist: [{ type: mongoose.Schema.ObjectId, ref: "Product" }],
-     cart: [
-      {
-        product: { type: mongoose.Schema.ObjectId, ref: "Product", required: true },
-        quantity: { type: Number, default: 1, min: 1 },
-      }
-    ],
+    //  cart: [
+    //   {
+    //     product: { type: mongoose.Schema.ObjectId, ref: "Product", required: true },
+    //     quantity: { type: Number, default: 1, min: 1 },
+    //   }
+    // ],
      avatar: { type: String },
 
     refreshToken: String,

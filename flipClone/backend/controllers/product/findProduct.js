@@ -7,7 +7,7 @@ const findProduct = async (req, res, next) => {
     try {
         const productId = req.params.id;
 
-        const product = await productModel.findById(productId);
+        const product = await productModel.findById(productId).populate("seller");
         // if no product -? product don't exist
         !product &&
             response(res, 404, {

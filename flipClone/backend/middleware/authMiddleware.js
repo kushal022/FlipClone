@@ -4,6 +4,7 @@ import UserModel from "../models/userModel.js";
 import { response } from "../utils/response.js";
 import { createError } from "./errorHandler.js";
 
+// for users with role 'customer
 const requireSignIn = asyncHandler(async (req, res, next) => {
     try {
         const token = req.headers.authorization.split(" ")[1];
@@ -27,6 +28,7 @@ const requireSignIn = asyncHandler(async (req, res, next) => {
     }
 });
 
+// for users with role 'admin
 const isAdmin = asyncHandler(async (req, res, next) => {
     try {
         const token = req.headers.authorization.split(" ")[1];

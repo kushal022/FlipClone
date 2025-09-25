@@ -12,12 +12,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Products = () => {
     const location = useLocation();
+    console.log(location.search);
+
     const { user, isAdmin, token } = useSelector(state => state.auth);
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
 
     const [price, setPrice] = useState([0, 200000]);
-    console.log(location.search);
     const [category, setCategory] = useState(
         location.search ? location.search.split("=")[1] : ""
     );
@@ -42,6 +43,7 @@ const Products = () => {
         setCurrentPage(page);
     };
 
+    // Fetching products based on filters:
     useEffect(() => {
         toast(
             "The backend is starting up, please wait for a minute if the loader is visible."
@@ -67,15 +69,16 @@ const Products = () => {
                     }
                 );
                 console.log(res.data);
+                const products = res.data.data
 
                 res.status === 404 && 
                     toast.error("No Products Found!", {
                         toastId: "productNotFound",
                     });
 
-                res.status === 201 && setProducts(res.data.products);
+                res.data.success === true && setProducts(products);
                 setLoading(false);
-                setProductsCount(res.data.products.length);
+                setProductsCount(products.length);
             } catch (error) {
                 console.error("Error fetching data:", error);
                 setLoading(false);
@@ -94,20 +97,21 @@ const Products = () => {
     }, [price, category, ratings]);
 
 
-    
+    // Fetching wishlist items if user is logged in and not admin
     useEffect(() => {
-        // getting user wishlist items from server
         const fetchWishlistItems = async () => {
+            if (isAdmin === 'admin') return;
             try {
                 const res = await axios.get(
                     `${import.meta.env.VITE_SERVER_URL}/api/v1/user/wishlist`,
                     {
                         headers: {
-                            Authorization: token,
+                            Authorization: `Bearer ${token}`,
                         },
                     }
                 );
-                setWishlistItems(res.data.wishlistItems);
+                const wishlistItems = res.data.data
+                setWishlistItems(wishlistItems);
             } catch (error) {
                 console.error(
                     "Error fetching data from wishlist product page:",
@@ -125,7 +129,6 @@ const Products = () => {
 
     return (
         <>
-            {/* <SeoData title="All Products | Flipkart" /> */}
 
             <MinCategory />
             <main className="w-full pt-2 pb-5 sm:mt-0">
@@ -173,9 +176,7 @@ const Products = () => {
                                                 key={product._id}
                                                 {...product}
                                                 wishlistItems={wishlistItems}
-                                                setWishlistItems={
-                                                    setWishlistItems
-                                                }
+                                                setWishlistItems={setWishlistItems}
                                             />
                                         ))}
                                     </div>

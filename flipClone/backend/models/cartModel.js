@@ -21,15 +21,33 @@ const cartItemSchema = new mongoose.Schema(
       min: 1,
       default: 1,
     },
+    stock: {
+      type: Number,
+      required: true,
+      min: 0,
+      default: 0,
+    },
+    brandName: {
+        type: String,
+        required: true,
+    },
+    discountPrice: {
+        type: Number,
+    },
+    seller: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        require: true,
+    },
     image: {
-      type: String, // optional, for faster display
+      type: String, 
     },
     saveForLater: {
       type: Boolean,
       default: false,
     },
   },
-  { _id: false } // we don't need _id for each sub-document
+  { _id: false } 
 );
 
 const cartSchema = new mongoose.Schema(
@@ -47,7 +65,7 @@ const cartSchema = new mongoose.Schema(
     },
     totalItems: {
       type: Number,
-      default: 1,
+      default: 0,
     },
   },
   { timestamps: true }

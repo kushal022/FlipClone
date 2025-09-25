@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAuth, updateAuth } from "../redux/slices/auth";
 
 const UserProfile = () => {
-  const { user } = useSelector((state) => state.auth);
+  const { user, isAdmin } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   // for toggle edit sections
@@ -319,7 +319,7 @@ const UserProfile = () => {
 
         {/* deactivate account */}
         <div className="text-[14px] text-blue-500 font-[500] mt-4 -mb-4">
-          <Link to="/admin/dashboard/profile/deactivate">Deactivate Account</Link>
+          <Link to={isAdmin === 'admin' ? `/admin/dashboard/profile/deactivate` : `/user/${user._id}/dashboard/profile/deactivate` }>Deactivate Account</Link>
         </div>
       </div>
 

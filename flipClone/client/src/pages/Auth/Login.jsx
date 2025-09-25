@@ -9,6 +9,7 @@ import Spinner from "../../components/Spinner";
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { setAuth } from "../../redux/slices/auth";
+import { fetchCart } from "../../redux/asyncThunk/cart";
 // import SeoData from "../../SEO/SeoData";
 
 const Login = () => {
@@ -31,9 +32,12 @@ const Login = () => {
     useEffect(() => {
         // console.log('Isadmin: ', isAdmin)
         if (token) {
+            if(!isAdmin){
+                dispatch(fetchCart())
+            }
             isAdmin
-                ? navigate("/admin/dashboard")
-                : navigate("/user/dashboard");
+                ? navigate(`/admin/${user._id}/dashboard`)
+                : navigate(`/user/${user._id}/dashboard`);
         }
     }, [navigate, user, isAdmin]);
     // axios.defaults.headers.common["Authorization"] = auth.token;

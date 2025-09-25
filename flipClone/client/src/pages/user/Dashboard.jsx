@@ -8,14 +8,16 @@ import Reviews from "./Reviews";
 import PaymentCards from "./PaymentCards";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const Dashboard = () => {
     const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const auth = useSelector(state => state.auth)
 
     useEffect(() => {
-        if (window.location.pathname === "/user/dashboard")
-            navigate("/user/dashboard/profile");
+        if (window.location.pathname === `/user/${auth.user._id}/dashboard`)
+            navigate("./profile");
     }, [navigate]);
 
     const toggleMenu = () => {
@@ -26,16 +28,18 @@ const Dashboard = () => {
         <>
             <div className=" py-[5px]">
                 <div className="flex items-start justify-between text-[14px] px-2 sm:px-[50px] py-2 sm:py-[40px] gap-5">
+                    {/* ----------- Left Side / User Menu----------------- */}
                     <div
                         className={`sm:w-[30%] ${
                             isMenuOpen
-                                ? "w-full h-full bg-white relative"
-                                : "hidden"
+                            ? "w-full h-full bg-white relative"
+                            : "hidden"
                         } sm:inline-block `}
-                    >
+                        >
                         <UserMenu toggleMenu={toggleMenu} />
                     </div>
                     
+                    {/* ----------- Right Side / User Dashboard Routes ----------------- */}
                     <div
                         className={`w-full sm:w-[70%] bg-white shadow-md rounded-sm ${
                             isMenuOpen ? "hidden" : "block"
@@ -50,20 +54,11 @@ const Dashboard = () => {
                         <Routes>
                             {/* <Route path="" element={<UserProfile />} /> */}
                             <Route path="profile" element={<UserProfile />} />
-                            <Route
-                                path="address"
-                                element={<AddressComponent />}
-                            />
+                            <Route path="address" element={<AddressComponent />}/>
                             <Route path="pan" element={<PanCardComponent />} />
-                            <Route
-                                path="payment-cards"
-                                element={<PaymentCards />}
-                            />
+                            <Route path="payment-cards" element={<PaymentCards />}/>
                             <Route path="user-review" element={<Reviews />} />
-                            <Route
-                                path="profile/deactivate"
-                                element={<Deactivate />}
-                            />
+                            <Route path="profile/deactivate" element={<Deactivate />}/>
                         </Routes>
                     </div>
                 </div>

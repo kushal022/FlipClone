@@ -31,15 +31,17 @@ export const removeFromCartController = async (req, res, next) => {
         }
 
         const itemIndex = cart.items.findIndex(item => item.productId.toString() === productId);
+        // item exists in cart, remove it
         if (itemIndex > -1) {
-            // item exists in cart, remove it
             const item = cart.items[itemIndex];
+            // console.log(item)
             const itemTotalPrice = item.price * item.quantity;
             cart.items.splice(itemIndex, 1);
             cart.totalPrice -= itemTotalPrice;
             cart.totalItems -= item.quantity;
 
             await cart.save();
+            console.log('cart: ', cart)
             return response(res, 200, {
                 success: true, 
                 message: 'Item removed from cart successfully',

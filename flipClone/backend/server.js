@@ -19,7 +19,7 @@ import { createError, errorHandler } from "./middleware/errorHandler.js";
 import authRoute from "./routes/authRoute.js";
 import productRoute from "./routes/productRoute.js";
 import cartRoute from './routes/cartRoute.js'
-// import userRoute from "./routes/userRoute.js";
+import userRoute from "./routes/userRoute.js";
 
 const app = express();
 
@@ -61,7 +61,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/product", productRoute);
 app.use("/api/v1/cart", cartRoute);
-// app.use("/api/v1/user", userRoute);
+app.use("/api/v1/user", userRoute);
 
 
 app.use((req, res, next) => {

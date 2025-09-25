@@ -13,7 +13,7 @@ export const AccountDropdown = ({ user, onLogout }) => {
   const menuItems = [
     {
       label: "My Profile",
-      to: `${user?.role === "admin" ? "/admin" : "/user"}/dashboard`,
+      to: `${user?.role === "admin" ? "/admin" : `/user/${user?._id}`}/dashboard`,
       icon: <AiOutlineUser className="text-[14px]" />,
     },
     ...(user?.role !== "admin"

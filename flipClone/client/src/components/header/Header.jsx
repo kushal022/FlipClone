@@ -1,7 +1,6 @@
 
 
 
-/* eslint-disable no-unused-vars */
 import { useState, useRef, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
@@ -16,9 +15,7 @@ import { BsCart2, BsBox } from "react-icons/bs";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { MdLogin, MdLogout } from "react-icons/md";
 import SearchBar from "./SearchBar";
-// import { useCart } from "../../context/cart";
-// import { toast } from "react-toastify";
-// import LogOut from "../../pages/Auth/LogOut";
+import { toast } from "react-toastify";
 
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/slices/auth";
@@ -26,7 +23,8 @@ import { AccountDropdown } from "./AccountDropdown";
 
 const Header = () => {
     const dispatch = useDispatch();
-    const { user } = useSelector((state) => state.auth);
+    const { user, isAdmin } = useSelector((state) => state.auth);
+    const { cartItem } = useSelector(state => state.cart)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const dropdownMenu = [
@@ -113,11 +111,11 @@ const Header = () => {
             {user?.role !== 'admin' && (
               <div className="flex items-center gap-1 group">
                 <NavLink
-                  to="/cart"
+                  to={`/user/${user?._id}/cart`}
                   className="relative flex items-center gap-1"
                 >
                   <span className="absolute w-4 h-4 text-[11px] text-center font-semibold left-2 bottom-3 text-white bg-red-500 rounded-[50%] ">
-                    {/* {cartItems?.length} */}{user?.cart?.length || 0}
+                    {cartItem?.totalItems}
                   </span>
                   <BsCart2 className="text-[22px]" />
                   <span className="hidden md:block lg:block group-hover:text-slate-700">

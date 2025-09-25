@@ -1,4 +1,4 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import PersonIcon from "@mui/icons-material/Person";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
@@ -8,8 +8,12 @@ import { logout } from "../../redux/slices/auth";
 
 const UserMenu = ({ toggleMenu }) => {
     const { user} = useSelector((state) => state.auth);
+    const pathBase = `/user/${user._id}`
+    const pathDashboard = `/user/${user._id}/dashboard`
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
+    // console.log(location)
 
     const handleLogout = () => {
       dispatch(logout());
@@ -54,7 +58,7 @@ const UserMenu = ({ toggleMenu }) => {
                     </div>
                     <div className="flex flex-col  text-black font-[300] text-[14px] mb-2 mt-0 ">
                         <NavLink
-                            to="/user/dashboard/profile"
+                            to={`${pathDashboard}/profile`}
                             onClick={scrollToTop}
                             className={({ isActive }) =>
                                 isActive
@@ -68,7 +72,7 @@ const UserMenu = ({ toggleMenu }) => {
                         </NavLink>
 
                         <NavLink
-                            to="/user/dashboard/address"
+                            to={`${pathDashboard}/address`}
                             onClick={scrollToTop}
                             className={({ isActive }) =>
                                 isActive
@@ -82,7 +86,7 @@ const UserMenu = ({ toggleMenu }) => {
                         </NavLink>
 
                         <NavLink
-                            to="/user/dashboard/pan"
+                            to={`${pathDashboard}/pan`}
                             onClick={scrollToTop}
                             className={({ isActive }) =>
                                 isActive
@@ -106,7 +110,7 @@ const UserMenu = ({ toggleMenu }) => {
                     </div>
                     <div className="flex flex-col  text-black font-[300] text-[14px] mb-2 mt-0 ">
                         <NavLink
-                            to="/user/orders "
+                            to={`${pathBase}/orders`}
                             onClick={scrollToTop}
                             className={({ isActive }) =>
                                 isActive
@@ -120,7 +124,21 @@ const UserMenu = ({ toggleMenu }) => {
                         </NavLink>
 
                         <NavLink
-                            to="/user/wishlist"
+                            to={`${pathBase}/cart`}
+                            onClick={scrollToTop}
+                            className={({ isActive }) =>
+                                isActive
+                                    ? "font-[600] text-blue-500 bg-[#f1f3f5]"
+                                    : ""
+                            }
+                        >
+                            <div className=" h-[40px] px-[60px] flex items-center hover:text-blue-500 hover:bg-[#f1f3f5]">
+                                My Cart
+                            </div>
+                        </NavLink>
+
+                        <NavLink
+                            to={`${pathBase}/wishlist`}
                             onClick={scrollToTop}
                             className={({ isActive }) =>
                                 isActive
@@ -134,7 +152,7 @@ const UserMenu = ({ toggleMenu }) => {
                         </NavLink>
 
                         <NavLink
-                            to="/user/dashboard/payment-cards"
+                            to= {`${pathDashboard}/payment-cards`}
                             onClick={scrollToTop}
                             className={({ isActive }) =>
                                 isActive
@@ -148,7 +166,7 @@ const UserMenu = ({ toggleMenu }) => {
                         </NavLink>
 
                         <NavLink
-                            to="/user/dashboard/user-review"
+                            to={`${pathDashboard}/user-review`}
                             onClick={scrollToTop}
                             className={({ isActive }) =>
                                 isActive
@@ -180,7 +198,7 @@ const UserMenu = ({ toggleMenu }) => {
                     </span>
                     <div className="flex gap-2.5 text-xs text-gray-500">
                         <Link to="/forgot-password">Change Password</Link>
-                        <Link to="/user/orders">Track Order</Link>
+                        <Link to={`${pathBase}/orders`}>Track Order</Link>
                         <Link to="/">Help Center</Link>
                     </div>
                 </div>

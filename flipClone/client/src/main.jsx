@@ -1,10 +1,10 @@
-import { StrictMode } from "react";
+import react,{ StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // make sure to import this!
+import "react-toastify/dist/ReactToastify.css"; 
 import store from "./store/store.js";
 import { Provider } from "react-redux";
 import "slick-carousel/slick/slick.css";

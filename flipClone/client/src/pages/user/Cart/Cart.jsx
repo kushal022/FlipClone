@@ -128,9 +128,9 @@ const Cart = () => {
             {/* <!-- saved for later items container --> */}
             <div className="flex flex-col mt-5 shadow bg-white mb-8">
               <span className="font-medium text-lg px-2 sm:px-8 py-4 border-b">
-                Saved For Later ({saveLaterItems?.length})
+                Saved For Later ({cartItem.savedItems?.length})
               </span>
-              {saveLaterItems?.map((item, i) => (
+              {cartItem?.savedItems?.map((item, i) => (
                 <SaveForLater product={item} key={i} />
               ))}
             </div>

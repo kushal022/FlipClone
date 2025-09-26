@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addToCart, decQuantity, removeFromCart } from "../../../redux/asyncThunk/cart";
+import { addToSaveForLater } from "../../../redux/asyncThunk/saveForLater";
 
 const CartItem = ({ product, inCart }) => {
   // console.log('Product id: ', product)
@@ -37,6 +38,7 @@ const CartItem = ({ product, inCart }) => {
   };
 
   const saveForLaterHandler = (product) => {
+    dispatch(addToSaveForLater(product))
   };
 
   return (
@@ -61,7 +63,7 @@ const CartItem = ({ product, inCart }) => {
           {/* <!-- product title --> */}
           <div className="flex flex-col sm:flex-row justify-between items-start pr-5 gap-1 sm:gap-0">
             <div className="flex flex-col gap-0.5 group sm:w-3/5">
-              <p className="group-hover:text-primaryBlue">
+              <p className="group-hover:text-blue-500">
                 {product?.name?.length > 30
                   ? `${product?.name?.substring(0, 30)}...`
                   : product?.name}

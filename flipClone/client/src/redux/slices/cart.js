@@ -1,5 +1,6 @@
 import { createSlice, } from "@reduxjs/toolkit";
 import { addToCart, decQuantity, fetchCart, removeFromCart } from "../asyncThunk/cart";
+import { addToSaveForLater, moveBackToCart, removeFromSaveForLater } from "../asyncThunk/saveForLater";
 
 
 const cartSlice = createSlice({
@@ -73,6 +74,45 @@ const cartSlice = createSlice({
         state.cartItem = action.payload;
       })
       .addCase(decQuantity.rejected, (state, action) => {
+        state.isLoadingCart = false;
+        state.error = action.payload;
+      })
+
+      // Cart to SaveForLater:
+      .addCase(addToSaveForLater.pending, (state) => {
+        state.isLoadingCart = true;
+      })
+      .addCase(addToSaveForLater.fulfilled, (state, action) => {
+        state.isLoadingCart = false;
+        state.cartItem = action.payload;
+      })
+      .addCase(addToSaveForLater.rejected, (state, action) => {
+        state.isLoadingCart = false;
+        state.error = action.payload;
+      })
+
+      // ✅ MOVE ITEM BACK TO CART
+      .addCase(moveBackToCart.pending, (state) => {
+        state.isLoadingCart = true;
+      })
+      .addCase(moveBackToCart.fulfilled, (state, action) => {
+        state.isLoadingCart = false;
+        state.cartItem = action.payload;
+      })
+      .addCase(moveBackToCart.rejected, (state, action) => {
+        state.isLoadingCart = false;
+        state.error = action.payload;
+      })
+
+      // ✅ REMOVE FROM SAVE FOR LATER
+      .addCase(removeFromSaveForLater.pending, (state) => {
+        state.isLoadingCart = true;
+      })
+      .addCase(removeFromSaveForLater.fulfilled, (state, action) => {
+        state.isLoadingCart = false;
+        state.cartItem = action.payload;
+      })
+      .addCase(removeFromSaveForLater.rejected, (state, action) => {
         state.isLoadingCart = false;
         state.error = action.payload;
       })

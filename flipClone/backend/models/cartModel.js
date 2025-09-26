@@ -59,6 +59,7 @@ const cartSchema = new mongoose.Schema(
       unique: true, // 1 user = 1 cart
     },
     items: [cartItemSchema], // array of products
+    savedItems: [ cartItemSchema ], // Save for later items
     totalPrice: {
       type: Number,
       default: 0,

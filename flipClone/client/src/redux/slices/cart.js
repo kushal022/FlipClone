@@ -7,6 +7,7 @@ const cartSlice = createSlice({
   initialState: {
     cartItem: [],
     isLoadingCart: false,
+    addSuccess: false,
     error: null,
   },
 
@@ -14,6 +15,10 @@ const cartSlice = createSlice({
     clearCart: (state) => {
       state.cartItem = [];
     },
+
+    setAddSuccess: (state, ) => {
+      state.addSuccess = false;
+    }
   },
 
   extraReducers: (builder) => {
@@ -21,10 +26,12 @@ const cartSlice = createSlice({
       // ✅ ADD to Cart
       .addCase(addToCart.pending, (state,) => {
         state.isLoadingCart = true;
+        state.addSuccess = false;
       })
       .addCase(addToCart.fulfilled, (state, action) => {
         state.isLoadingCart = false;
         state.cartItem = action.payload;
+        state.addSuccess = true;
       })
       .addCase(addToCart.rejected, (state, action) => {
         state.isLoadingCart = false;
@@ -72,5 +79,5 @@ const cartSlice = createSlice({
   },
 });
 
-export const { clearCart } = cartSlice.actions;
+export const { clearCart, setAddSuccess } = cartSlice.actions;
 export default cartSlice.reducer;

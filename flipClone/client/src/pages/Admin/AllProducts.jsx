@@ -7,11 +7,10 @@ import { Link } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import Rating from "@mui/material/Rating";
 import Actions from "./Actions";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const AllProducts = () => {
-    const { user, token } = useSelector((state) => state.auth);
-    const dispatch = useDispatch();
+    const { token } = useSelector((state) => state.auth);
 
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -68,7 +67,7 @@ const AllProducts = () => {
             renderCell: (params) => {
                 return (
                     <div className="flex items-center gap-2">
-                        <div className="w-10 h-10 rounded-full">
+                        <div className="w-10 h-10 ">
                             <img
                                 draggable="false"
                                 src={params.row.image}
@@ -76,7 +75,9 @@ const AllProducts = () => {
                                 className="w-full h-full rounded-full object-cover"
                             />
                         </div>
-                        {params.row.name}
+                        {params.row.name.length > 14
+                                ? `${params.row.name.substring(0, 16)}...`
+                                : params.row.name}
                     </div>
                 );
             },

@@ -20,6 +20,7 @@ import authRoute from "./routes/authRoute.js";
 import productRoute from "./routes/productRoute.js";
 import cartRoute from './routes/cartRoute.js'
 import userRoute from "./routes/userRoute.js";
+import reviewRoute from "./routes/reviewRoute.js";
 
 const app = express();
 
@@ -51,17 +52,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //connect DB
 connectDB();
 
-
-
 app.get("/", (req, res) => {
     res.send("Hello there!");
 });
 
-//routes
+//*routes
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/product", productRoute);
 app.use("/api/v1/cart", cartRoute);
 app.use("/api/v1/user", userRoute);
+app.use("/api/v1/review", reviewRoute);
 
 
 app.use((req, res, next) => {

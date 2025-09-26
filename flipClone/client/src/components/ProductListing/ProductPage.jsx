@@ -30,7 +30,8 @@ import { fashionProducts } from "../../utils/fashion";
 import { electronicProducts } from "../../utils/electronics";
 import ScrollToTopOnRouteChange from "../../utils/ScrollToTopOnRouteChange";
 import { addToCart } from "../../redux/asyncThunk/cart.js";
-// import { useCart } from "../../context/cart";
+import { setAddSuccess } from "../../redux/slices/cart.js";
+import { response } from "../../../../backend/utils/response.js";
 
 const ProductDetails = () => {
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ const ProductDetails = () => {
   const { user, token, isAdmin, isLoading } = useSelector(
     (state) => state.auth
   );
-  const { cartItem, isLoadingCart } = useSelector((state) => state.cart);
+  const { cartItem,addSuccess, isLoadingCart } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   // console.log(cartItem)
 
@@ -48,6 +49,11 @@ const ProductDetails = () => {
   const [viewAll, setViewAll] = useState(false);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
+  const [ reviews, setReviews ] = useState(null);
+  const [ page, setPage ] = useState(1);
+  const [ limit, setLimit ] = useState(10);
+  const [ loadMore, setLoadMore ] = useState(false);
+
   const [wishlistItems, setWishlistItems] = useState([]); // store fetched wishlist items ids 
   const [product, setProduct] = useState({}); // store fetched products
   const [loading, setLoading] = useState(true);
@@ -66,10 +72,34 @@ const ProductDetails = () => {
     nextArrow: <NextBtn />,
   };
 
+  //* Fetch reviews
+  
+   const fetchReviews = async()=>{
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_SERVER_URL}/api/v1/review/get-review/${productId}?page=${page}&limit=${limit}`,
+      )
+      const reviews = res.data.data;
+      console.log(res)
+      setReviews(reviews)
+    } catch (error) {
+      console.error("Fetch reviews failed: ", error)
+      toast.error("Fetch reviews failed!")
+    }
+  }
 
-  //~ Review submit handler:
-  const reviewSubmitHandler = () => {
-    if (rating === 0 || !comment.trim()) {
+  console.log('reviews: ', reviews)
+
+  useEffect(()=>{
+    fetchReviews()
+    console.log('fetched reviews')
+  },[productId])
+
+
+  //* Review submit handler:
+  const reviewSubmitHandler = async() => {
+    try {
+      if (rating === 0 || !comment.trim()) {
       toast.error("Empty Review", {
         style: { top: "40px" },
       });
@@ -80,7 +110,28 @@ const ProductDetails = () => {
     formData.set("comment", comment);
     formData.set("productId", productId);
 
+    const res = await axios.post(
+      `${import.meta.env.VITE_SERVER_URL}/api/v1/review/add-review`,
+      formData,
+       {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+    )
+    // console.log(res)
+    res.data.success === true &&
+    toast.success(`${res.data.message}`)&&
+    fetchReviews()
+
+    res.data.success === false && 
+    toast.error(`${res.data.message}`)
     setOpen(false);
+  } catch (error) {
+    console.log('Error in add review', error)
+    toast.error(`${error.response.data.message}`)
+      // toast.error("Error in add review")
+    }
   };
 
   const handleDialogClose = () => {
@@ -90,21 +141,36 @@ const ProductDetails = () => {
   // const itemInCart = cartItem?.items?.some(
   //   (item) => item.productId === productId
   // );
+  // console.log(itemInCart)
+  console.log('addSuccess:', addSuccess)
 
-  useEffect(()=>{
-    const result = cartItem?.items?.some(
-      item => item.productId === productId
-    )
-    setItemInCart(result)
-  },[cartItem.items])
+  // useEffect(()=>{
+  //   const result = cartItem?.items?.some(
+  //     item => item.productId === productId
+  //   )
+  //   setItemInCart(result)
+  // },[addSuccess])
+
+  const checkItemInCart = ()=>{
+    if(!isLoadingCart){
+      const result = cartItem?.items?.find(
+        item => item.productId === productId
+
+      )
+      setItemInCart(result)
+    }
+    // console.log(result)
+  }
 
   const goToCart = () => {
-    navigate("/cart");
+    navigate(`/user/${user._id}/cart`);
+    checkItemInCart()
+    dispatch(setAddSuccess())
   };
 
   const buyNow = () => {
     addToCartHandler();
-    navigate("/cart");
+    goToCart()
   };
 
     //* Add to cart handler:
@@ -121,6 +187,8 @@ const ProductDetails = () => {
       quantity: 1,
     };
     dispatch(addToCart(item));
+    checkItemInCart() 
+    
   };
 
   //*fetch product details
@@ -254,7 +322,7 @@ const ProductDetails = () => {
                 <div className="flex flex-col gap-3 m-3 ">
                   <div className="w-full lg:w-[450px] h-full pb-6 border relative">
                     <Slider {...settings}>
-                      {product?.images.length > 1 ? (
+                      {product?.images?.length > 1 ? (
                         product?.images?.map((item, i) => (
                           <img
                             draggable="false"
@@ -296,12 +364,12 @@ const ProductDetails = () => {
                   <div className="w-full flex gap-3">
                     {product.stock > 0 && (
                       <button
-                        onClick={itemInCart ? goToCart : addToCartHandler}
+                        onClick={addSuccess || itemInCart ? goToCart : addToCartHandler}
                         disabled={isAdmin}
                         className="disabled:cursor-not-allowed p-2 sm:p-4 w-1/2 flex items-center justify-center gap-2 text-white bg-[#ff9f00] rounded-sm shadow hover:shadow-lg"
                       >
                         <ShoppingCartIcon />
-                        {itemInCart ? "GO TO CART" : "ADD TO CART"}
+                        {addSuccess || itemInCart ? "GO TO CART" : "ADD TO CART"}
                       </button>
                     )}
                     {/*  ---- by now btn--- */}
@@ -605,7 +673,7 @@ const ProductDetails = () => {
                     </div>
 
                     {viewAll
-                      ? product?.reviews
+                      ? reviews?.reviews
                           ?.map((rev, i) => (
                             <div
                               className="flex flex-col gap-2 py-4 px-6 border-b"
@@ -620,12 +688,12 @@ const ProductDetails = () => {
                               />
                               <p>{rev.comment}</p>
                               <span className="text-sm text-gray-500">
-                                by {rev.name}
+                                by {rev.user.fname + " " + rev.user.lname}
                               </span>
                             </div>
                           ))
                           .reverse()
-                      : product.reviews
+                      : reviews?.reviews
                           ?.slice(-3)
                           .map((rev, i) => (
                             <div
@@ -641,12 +709,12 @@ const ProductDetails = () => {
                               />
                               <p>{rev.comment}</p>
                               <span className="text-sm text-gray-500">
-                                by {rev.name}
+                                by {rev.user.fname + " " + rev.user.lname}
                               </span>
                             </div>
                           ))
                           .reverse()}
-                    {product.reviews?.length > 3 && (
+                    {reviews?.reviews?.length > 3 && (
                       <button
                         onClick={() => setViewAll(!viewAll)}
                         className="w-1/3 m-2 rounded-sm shadow hover:shadow-lg py-2 bg-blue-500 text-white"

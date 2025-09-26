@@ -23,7 +23,7 @@ import { AccountDropdown } from "./AccountDropdown";
 
 const Header = () => {
     const dispatch = useDispatch();
-    const { user, isAdmin } = useSelector((state) => state.auth);
+    const { user, isAdmin, token } = useSelector((state) => state.auth);
     const { cartItem } = useSelector(state => state.cart)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -111,12 +111,12 @@ const Header = () => {
             {user?.role !== 'admin' && (
               <div className="flex items-center gap-1 group">
                 <NavLink
-                  to={`/user/${user?._id}/cart`}
+                  to={token ? `/user/${user?._id}/cart` : `/login`}
                   className="relative flex items-center gap-1"
                 >
-                  <span className="absolute w-4 h-4 text-[11px] text-center font-semibold left-2 bottom-3 text-white bg-red-500 rounded-[50%] ">
+                  {token && <span className="absolute w-4 h-4 text-[11px] text-center font-semibold left-2 bottom-3 text-white bg-red-500 rounded-[50%] ">
                     {cartItem?.totalItems}
-                  </span>
+                  </span>}
                   <BsCart2 className="text-[22px]" />
                   <span className="hidden md:block lg:block group-hover:text-slate-700">
                     <p className="text-[18px]">Cart</p>

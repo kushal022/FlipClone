@@ -2,13 +2,16 @@ import express from "express";
 import { requireSignIn } from "../middleware/authMiddleware.js";
 import updateWishlistController from "../controllers/user/updateWishlist.js";
 import getWishlistItemsController from "../controllers/user/getWishlistItems.js";
+import getWishlistProductsController from "../controllers/user/getWishlistProduct.js";
 const router = express.Router();
 
 
 // Getting Wishlist items:
 router.get("/wishlist", requireSignIn, getWishlistItemsController);
 // Updating Wishlist items:
-router.post("/update-wishlist", requireSignIn, updateWishlistController)
+router.post("/update-wishlist", requireSignIn, updateWishlistController);
+// Get Wishlist Products (Pagination):
+router.get("/wishlist-products", requireSignIn, getWishlistProductsController);
 
 
 export default router;

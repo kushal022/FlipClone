@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 
 const PriceCard = ({ cartItems, totalItems }) => {
@@ -12,27 +11,33 @@ const PriceCard = ({ cartItems, totalItems }) => {
 
         <div className="flex flex-col gap-4 p-6 pb-3">
           <p className="flex justify-between">
-            Price ({totalItems} item){" "}
+            Price ({totalItems || 0} item){" "}
             <span>
               ₹
-              {cartItems
-                .reduce((sum, item) => sum + item.discountPrice * item.quantity,0)
-                .toLocaleString()}
+              {(cartItems &&
+                cartItems
+                  .reduce(
+                    (sum, item) => sum + item.discountPrice * item.quantity,
+                    0
+                  )
+                  .toLocaleString()) ||
+                0}
             </span>
           </p>
           <p className="flex justify-between">
             Discount{" "}
             <span className="text-primary-green">
               - ₹
-              {cartItems
-                .reduce(
-                  (sum, item) =>
-                    sum +
-                    (item.price * item.quantity -
-                      item.discountPrice * item.quantity),
-                  0
-                )
-                .toLocaleString()}
+              {cartItems &&
+                cartItems
+                  .reduce(
+                    (sum, item) =>
+                      sum +
+                      (item.price * item.quantity -
+                        item.discountPrice * item.quantity),
+                    0
+                  )
+                  .toLocaleString() || 0}
             </span>
           </p>
           <p className="flex justify-between">
@@ -44,27 +49,29 @@ const PriceCard = ({ cartItems, totalItems }) => {
             Total Amount{" "}
             <span>
               ₹
-              {cartItems
-                .reduce(
-                  (sum, item) => sum + item.discountPrice * item.quantity,
-                  0
-                )
-                .toLocaleString()}
+              {cartItems &&
+                cartItems
+                  .reduce(
+                    (sum, item) => sum + item.discountPrice * item.quantity,
+                    0
+                  )
+                  .toLocaleString() || 0}
             </span>
           </p>
           <div className="border border-dashed"></div>
 
           <p className="font-medium text-primaryGreen">
             You will save ₹
-            {cartItems
-              .reduce(
-                (sum, item) =>
-                  sum +
-                  (item.price * item.quantity -
-                    item.discountPrice * item.quantity),
-                0
-              )
-              .toLocaleString()}{" "}
+            {cartItems &&
+              cartItems
+                .reduce(
+                  (sum, item) =>
+                    sum +
+                    (item.price * item.quantity -
+                      item.discountPrice * item.quantity),
+                  0
+                )
+                .toLocaleString() || 0 }{" "}
             on this order
           </p>
         </div>

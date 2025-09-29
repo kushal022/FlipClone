@@ -8,6 +8,8 @@ import CartModel from "../../models/cartModel.js";
 export const getCartController = async (req, res, next) => {
     try {
         const userId = req.user._id;
+        // console.log("in get cart: ", userId);
+        
 
         // find cart for the user: 
         let cart = await CartModel.findOne({ user: userId});

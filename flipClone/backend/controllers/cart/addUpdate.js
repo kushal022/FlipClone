@@ -36,10 +36,12 @@ export const addToCartController = async (req, res, next) => {
             const newCart = new CartModel({
                 user: userId,
                 items: [{ productId, name, price, stock, brandName, seller, discountPrice, quantity, image, saveForLater}],
-                totalPrice: price * quantity,
-                totalItems: quantity,
+                totalPrice: price * 1,
+                totalDiscountPrice: discountPrice * 1,
+                totalItems: 1,
             });
-            await newCart.save();
+            let cart = await newCart.save();
+            await cart.populate("items.productId");
             return response(res, 201, {
                 success: true,
                 message: "New Cart Created and Item Added to Cart",
@@ -49,24 +51,29 @@ export const addToCartController = async (req, res, next) => {
             // if cart exists, update it
             const itemIndex = cart.items.findIndex(item => item.productId.toString() === productId);
             let newTotalPrice = cart.totalPrice + price * 1;
+            let newTotalDiscountPrice = cart.totalDiscountPrice + discountPrice * 1;
             let newTotalItems = cart.totalItems + 1;
+
+            // If item exists in cart, update its quantity
             if (itemIndex > -1 ) {
-                // item exists in cart, update its quantity
                 cart.items[itemIndex].quantity += 1;
                 cart.items[itemIndex].saveForLater = saveForLater;
                 cart.totalPrice = newTotalPrice;
+                cart.totalDiscountPrice = newTotalDiscountPrice;
                 cart.totalItems = newTotalItems;
 
                 await cart.save();
+                await cart.populate("items.productId");
                 return response(res, 200, {
                     success: true, 
                     message: "Cart updated successfully",
                     data: cart
                 });
             }else {
-                // item does not exist in cart, add new item
+                //If item does not exist in cart, add new item
                 cart.items.push({ productId, name, price,stock, brandName, seller, discountPrice, quantity, image, saveForLater});
                 cart.totalPrice = newTotalPrice;
+                cart.totalDiscountPrice = newTotalDiscountPrice;
                 cart.totalItems = newTotalItems;
 
                 await cart.save();

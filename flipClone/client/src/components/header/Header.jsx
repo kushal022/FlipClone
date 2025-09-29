@@ -114,8 +114,9 @@ const Header = () => {
                   to={token ? `/user/${user?._id}/cart` : `/login`}
                   className="relative flex items-center gap-1"
                 >
-                  {token && <span className="absolute w-4 h-4 text-[11px] text-center font-semibold left-2 bottom-3 text-white bg-red-500 rounded-[50%] ">
-                    {cartItem?.totalItems}
+                  {token && <span className={`absolute w-4 h-4 text-[11px] text-center font-semibold left-2 bottom-3 text-white bg-red-500 rounded-[50%]
+                    ${cartItem?.totalItems < 1 || cartItem?.items?.length < 1 || cartItem.items == undefined ? 'hidden': ''} `}>
+                    {cartItem?.totalItems || 0}
                   </span>}
                   <BsCart2 className="text-[22px]" />
                   <span className="hidden md:block lg:block group-hover:text-slate-700">

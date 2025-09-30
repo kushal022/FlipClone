@@ -99,12 +99,7 @@ const Register = () => {
 
   //display content
   return (
-    //SEO
     <>
-      {/* <SeoData
-                title="Sign up - New User"
-                description="Register new user with details"
-            /> */}
       {isSubmitting ? (
         <Spinner />
       ) : (

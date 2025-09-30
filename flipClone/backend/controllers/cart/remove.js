@@ -30,19 +30,22 @@ export const removeFromCartController = async (req, res, next) => {
             });
         }
 
+        // if card exist find item init:
         const itemIndex = cart.items.findIndex(item => item.productId.toString() === productId);
         // item exists in cart, remove it
         if (itemIndex > -1) {
             const item = cart.items[itemIndex];
             // console.log(item)
             const itemTotalPrice = item.price * item.quantity;
+            const itemTotalDiscountPrice = item.discountPrice * item.quantity;
             cart.items.splice(itemIndex, 1);
             cart.totalPrice -= itemTotalPrice;
+            cart.totalDiscountPrice -= itemTotalDiscountPrice;
             cart.totalItems -= item.quantity;
 
             await cart.save();
-            console.log('cart: ', cart)
-            return response(res, 200, {
+            // console.log('cart: ', cart)
+            return response(res, 200, { 
                 success: true, 
                 message: 'Item removed from cart successfully',
                 data: cart

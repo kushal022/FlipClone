@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@cashfreepayments/cashfree-js": "^1.0.5",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^7.3.2",
@@ -20,6 +21,7 @@
     "@stripe/stripe-js": "^7.9.0",
     "@tailwindcss/vite": "^4.1.13",
     "axios": "^1.12.2",
+    "cashfree-dropjs": "^1.1.5",
     "form-data": "^4.0.4",
     "js-cookie": "^3.0.5",
     "lodash.debounce": "^4.0.8",

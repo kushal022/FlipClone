@@ -20,18 +20,13 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/slices/auth";
 import { AccountDropdown } from "./AccountDropdown";
+import { fetchCart } from "../../redux/asyncThunk/cart";
 
 const Header = () => {
     const dispatch = useDispatch();
     const { user, isAdmin, token } = useSelector((state) => state.auth);
     const { cartItem } = useSelector(state => state.cart)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-    const dropdownMenu = [
-        "My Profile",
-        "Wishlist",
-        "Orders",
-    ];
 
     // toggle Dropdown 
     let closeTimeout;
@@ -116,7 +111,7 @@ const Header = () => {
                 >
                   {token && <span className={`absolute w-4 h-4 text-[11px] text-center font-semibold left-2 bottom-3 text-white bg-red-500 rounded-[50%]
                     ${cartItem?.totalItems < 1 || cartItem?.items?.length < 1 || cartItem.items == undefined ? 'hidden': ''} `}>
-                    {cartItem?.totalItems || 0}
+                    {cartItem?.totalItems || cartItem?.items?.length ||  0}
                   </span>}
                   <BsCart2 className="text-[22px]" />
                   <span className="hidden md:block lg:block group-hover:text-slate-700">

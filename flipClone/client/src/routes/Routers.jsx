@@ -20,6 +20,8 @@ import OrderDetails from "../pages/user/Orders/OrderDetails";
 import AdminOrders from "../pages/Admin/AdminOrders";
 import UpdateOrders from "../pages/Admin/UpdateOrders";
 import DeleteAllOrder from "../pages/DeleteAllOrder.jsx";
+import PlaceOrder from "../pages/user/Cart/PlaceOrder.jsx"
+import Checkout from "../pages/user/Cart/Checkout.jsx";
 
 const Routers = () => {
     return (
@@ -48,6 +50,8 @@ const Routers = () => {
                 <Route path="orders/order_details/:id" element={<OrderDetails />}/>
                 <Route path=":id/wishlist" element={<Wishlist />} />
                 <Route path=":id/orders" element={<Orders />} />
+                <Route path="place-order" element={<PlaceOrder />} />
+                <Route path="place-order/checkout" element={<Checkout />} />
             </Route>
 
             <Route path="/admin" element={<AdminRoute />}>

@@ -21,6 +21,8 @@ import productRoute from "./routes/productRoute.js";
 import cartRoute from './routes/cartRoute.js'
 import userRoute from "./routes/userRoute.js";
 import reviewRoute from "./routes/reviewRoute.js";
+import orderRoute from "./routes/orderRoute.js";
+import addressRoute from "./routes/addressRoute.js";
 
 const app = express();
 
@@ -36,7 +38,10 @@ cloudinary.config({
 
 //&middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json({
+     verify: function (req, res, buf) {
+    req.rawBody = buf; // store raw buffer for webhook route
+}}));
 app.use(morgan("dev"));
 // to send large files
 app.use(
@@ -62,6 +67,8 @@ app.use("/api/v1/product", productRoute);
 app.use("/api/v1/cart", cartRoute);
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/review", reviewRoute);
+app.use("/api/v1/order", orderRoute);
+app.use("/api/v1/address", addressRoute);
 
 
 app.use((req, res, next) => {

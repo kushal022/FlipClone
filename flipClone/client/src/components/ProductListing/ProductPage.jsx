@@ -31,7 +31,6 @@ import { electronicProducts } from "../../utils/electronics";
 import ScrollToTopOnRouteChange from "../../utils/ScrollToTopOnRouteChange";
 import { addToCart } from "../../redux/asyncThunk/cart.js";
 import { setAddSuccess } from "../../redux/slices/cart.js";
-import { response } from "../../../../backend/utils/response.js";
 
 const ProductDetails = () => {
   const navigate = useNavigate();
@@ -40,24 +39,25 @@ const ProductDetails = () => {
   const { user, token, isAdmin, isLoading } = useSelector(
     (state) => state.auth
   );
-  const { cartItem,addSuccess, isLoadingCart } = useSelector((state) => state.cart);
+  const { cartItem, addSuccess, isLoadingCart } = useSelector(
+    (state) => state.cart
+  );
   const dispatch = useDispatch();
-  // console.log(cartItem)
 
   // reviews toggle
   const [open, setOpen] = useState(false);
   const [viewAll, setViewAll] = useState(false);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
-  const [ reviews, setReviews ] = useState(null);
-  const [ page, setPage ] = useState(1);
-  const [ limit, setLimit ] = useState(10);
-  const [ loadMore, setLoadMore ] = useState(false);
+  const [reviews, setReviews] = useState(null);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [loadMore, setLoadMore] = useState(false);
 
-  const [wishlistItems, setWishlistItems] = useState([]); // store fetched wishlist items ids 
+  const [wishlistItems, setWishlistItems] = useState([]); // store fetched wishlist items ids
   const [product, setProduct] = useState({}); // store fetched products
   const [loading, setLoading] = useState(true);
-  const [ itemInCart, setItemInCart ] = useState(null)
+  const [itemInCart, setItemInCart] = useState(null);
 
   //slider settings
   const settings = {
@@ -73,107 +73,103 @@ const ProductDetails = () => {
   };
 
   //* Fetch reviews
-  
-   const fetchReviews = async()=>{
+  const fetchReviews = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}/api/v1/review/get-review/${productId}?page=${page}&limit=${limit}`,
-      )
+        `${
+          import.meta.env.VITE_SERVER_URL
+        }/api/v1/review/get-review/${productId}?page=${page}&limit=${limit}`
+      );
       const reviews = res.data.data;
-      console.log(res)
-      setReviews(reviews)
+      console.log(res);
+      setReviews(reviews);
     } catch (error) {
-      console.error("Fetch reviews failed: ", error)
-      toast.error("Fetch reviews failed!")
+      console.error("Fetch reviews failed: ", error);
+      toast.error("Fetch reviews failed!");
     }
-  }
+  };
 
-  console.log('reviews: ', reviews)
+  // console.log('reviews: ', reviews)
 
-  useEffect(()=>{
-    fetchReviews()
-    console.log('fetched reviews')
-  },[productId])
-
+  useEffect(() => {
+    fetchReviews();
+    console.log("fetched reviews");
+  }, [productId]);
 
   //* Review submit handler:
-  const reviewSubmitHandler = async() => {
+  const reviewSubmitHandler = async () => {
     try {
       if (rating === 0 || !comment.trim()) {
-      toast.error("Empty Review", {
-        style: { top: "40px" },
-      });
-      return;
-    }
-    const formData = new FormData();
-    formData.set("rating", rating);
-    formData.set("comment", comment);
-    formData.set("productId", productId);
+        toast.error("Empty Review", {
+          style: { top: "40px" },
+        });
+        return;
+      }
+      const formData = new FormData();
+      formData.set("rating", rating);
+      formData.set("comment", comment);
+      formData.set("productId", productId);
 
-    const res = await axios.post(
-      `${import.meta.env.VITE_SERVER_URL}/api/v1/review/add-review`,
-      formData,
-       {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-    )
-    // console.log(res)
-    res.data.success === true &&
-    toast.success(`${res.data.message}`)&&
-    fetchReviews()
+      const res = await axios.post(
+        `${import.meta.env.VITE_SERVER_URL}/api/v1/review/add-review`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // console.log(res)
+      res.data.success === true &&
+        toast.success(`${res.data.message}`) &&
+        fetchReviews();
 
-    res.data.success === false && 
-    toast.error(`${res.data.message}`)
-    setOpen(false);
-  } catch (error) {
-    console.log('Error in add review', error)
-    toast.error(`${error.response.data.message}`)
+      res.data.success === false && toast.error(`${res.data.message}`);
+      setOpen(false);
+    } catch (error) {
+      console.log("Error in add review", error);
+      toast.error(`${error.response.data.message}`);
       // toast.error("Error in add review")
     }
   };
 
   const handleDialogClose = () => {
-    setOpen(!open);
+    setOpen(false);
+    setRating(0);
+    setComment("");
   };
 
-  // const itemInCart = cartItem?.items?.some(
-  //   (item) => item.productId === productId
-  // );
-  // console.log(itemInCart)
-  console.log('addSuccess:', addSuccess)
-
-  // useEffect(()=>{
-  //   const result = cartItem?.items?.some(
-  //     item => item.productId === productId
-  //   )
-  //   setItemInCart(result)
-  // },[addSuccess])
-
-  const checkItemInCart = ()=>{
-    if(!isLoadingCart){
-      const result = cartItem?.items?.find(
-        item => item.productId === productId
-
-      )
-      setItemInCart(result)
+  //& Check if item is in cart
+  const checkItemInCart = () => {
+    if (cartItem?.items && productId) {
+      const result = cartItem.items.some(
+        (item) => item.productId === productId
+      );
+      setItemInCart(result);
     }
-    // console.log(result)
-  }
+  };
+
+  //& Update itemInCart when cartItem or productId changes
+  useEffect(() => {
+    checkItemInCart();
+  }, [cartItem, productId, addSuccess]);
 
   const goToCart = () => {
     navigate(`/user/${user._id}/cart`);
-    checkItemInCart()
-    dispatch(setAddSuccess())
+    // checkItemInCart()
+    dispatch(setAddSuccess());
   };
 
   const buyNow = () => {
-    addToCartHandler();
-    goToCart()
+    if (!itemInCart) {
+      addToCartHandler();
+    }
+    setTimeout(() => {
+      goToCart();
+    }, 500);
   };
 
-    //* Add to cart handler:
+  //* Add to cart handler:
   const addToCartHandler = () => {
     const item = {
       productId: product._id,
@@ -187,20 +183,24 @@ const ProductDetails = () => {
       quantity: 1,
     };
     dispatch(addToCart(item));
-    checkItemInCart() 
-    
+    // checkItemInCart()
   };
 
   //*fetch product details
   useEffect(() => {
     const fetchProduct = async () => {
       try {
+        setLoading(true);
         const res = await axios.get(
           `${import.meta.env.VITE_SERVER_URL}/api/v1/product/${productId}`
         );
         // console.log(res.data.product);
         const product = res.data.data;
-        res.data.success === true && setProduct(product);
+        if (res.data.success === true) {
+          setProduct(product);
+          // Check if this product is in cart after product is loaded
+          checkItemInCart();
+        }
         setLoading(false);
       } catch (error) {
         console.error("Error:", error);
@@ -225,7 +225,7 @@ const ProductDetails = () => {
     fetchProduct();
   }, [productId]);
 
-   //*fetch wishlist items
+  //*fetch wishlist items
   useEffect(() => {
     //fetch wishlist items
     const fetchWishlistItems = async () => {
@@ -320,7 +320,7 @@ const ProductDetails = () => {
               <div className="w-full lg:w-2/5 lg:sticky top-16 lg:h-screen">
                 {/* <!-- imgBox --> */}
                 <div className="flex flex-col gap-3 m-3 ">
-                  <div className="w-full lg:w-[450px] h-full pb-6 border relative">
+                  <div className="w-full lg:w-[450px] h-full pb-6 border border-gray-200 relative">
                     <Slider {...settings}>
                       {product?.images?.length > 1 ? (
                         product?.images?.map((item, i) => (
@@ -343,7 +343,7 @@ const ProductDetails = () => {
                     </Slider>
                     {/* wishlist icon */}
                     <div
-                      className={`absolute top-4 right-4 shadow-lg bg-white w-9 h-9 border flex items-center justify-center rounded-full ${
+                      className={`absolute top-4 right-4 shadow-lg bg-white w-9 h-9 border border-gray-300 flex items-center justify-center rounded-full ${
                         isAdmin === "admin" ? "hidden" : ""
                       } `}
                     >
@@ -364,19 +364,19 @@ const ProductDetails = () => {
                   <div className="w-full flex gap-3">
                     {product.stock > 0 && (
                       <button
-                        onClick={addSuccess || itemInCart ? goToCart : addToCartHandler}
+                        onClick={itemInCart ? goToCart : addToCartHandler}
                         disabled={isAdmin}
-                        className="disabled:cursor-not-allowed p-2 sm:p-4 w-1/2 flex items-center justify-center gap-2 text-white bg-[#ff9f00] rounded-sm shadow hover:shadow-lg"
+                        className={` text-white disabled:cursor-not-allowed p-2 sm:p-4 w-1/2 flex items-center justify-center gap-2  bg-[#ff9f00] rounded-sm shadow cursor-pointer hover:shadow-lg`}
                       >
                         <ShoppingCartIcon />
-                        {addSuccess || itemInCart ? "GO TO CART" : "ADD TO CART"}
+                        {itemInCart ? "GO TO CART" : "ADD TO CART"}
                       </button>
                     )}
                     {/*  ---- by now btn--- */}
                     <button
                       onClick={buyNow}
                       disabled={isAdmin || product.stock < 1}
-                      className={`disabled:cursor-not-allowed flex items-center justify-center gap-2 text-white rounded-sm shadow hover:shadow-lg p-4 ${
+                      className={`disabled:cursor-not-allowed flex items-center justify-center gap-2 text-white rounded-sm shadow hover:shadow-lg p-4 cursor-pointer ${
                         product.stock < 1
                           ? " w-full bg-red-600 cursor-not-allowed"
                           : "w-1/2 bg-[#fb641b]"
@@ -476,7 +476,7 @@ const ProductDetails = () => {
                   <div className="flex gap-8 mt-2 items-center text-sm">
                     <img
                       draggable="false"
-                      className="w-20 h-8 p-0.5 border object-contain"
+                      className="w-20 h-8 p-0.5 border border-gray-300 object-contain"
                       src={product.brand?.logo.url}
                       alt={product?.brand?.name}
                     />
@@ -569,7 +569,7 @@ const ProductDetails = () => {
                   {/* <!-- seller details --> */}
 
                   {/* <!-- flipkart plus banner --> */}
-                  {/* <div className="lg:w-1/2 mt-4 border">
+                  {/* <div className="lg:w-1/2 mt-4 border border-gray-300">
                                         <img
                                             draggable="false"
                                             className="w-full h-full object-fill"
@@ -587,8 +587,8 @@ const ProductDetails = () => {
                   {/* <!-- description details --> */}
 
                   {/* <!-- specifications border box --> */}
-                  <div className="w-full mt-4 pb-4 rounded-sm border flex flex-col">
-                    <h1 className="px-6 py-4 border-b text-2xl font-[600]">
+                  <div className="w-full mt-4 pb-4 rounded-sm border border-gray-300 flex flex-col">
+                    <h1 className="px-6 py-4 border-b border-gray-300 text-2xl font-[600]">
                       Specifications
                     </h1>
                     <h1 className="px-6 py-3 text-lg">General</h1>
@@ -608,14 +608,14 @@ const ProductDetails = () => {
                   {/* <!-- specifications border box --> */}
 
                   {/* <!-- reviews border box --> */}
-                  <div className="w-full mt-4 rounded-sm border flex flex-col">
-                    <div className="flex justify-between items-center border-b px-6 py-4">
+                  <div className="w-full mt-4 rounded-sm border border-gray-300 flex flex-col">
+                    <div className="flex justify-between items-center border-b border-gray-300 px-6 py-4">
                       <h1 className="text-2xl font-medium">
                         Ratings & Reviews
                       </h1>
                       <button
                         onClick={handleDialogClose}
-                        className="shadow bg-white font-[500] px-4 py-2 rounded-sm hover:shadow-md border"
+                        className="shadow bg-white font-[500] px-4 py-2 rounded-sm hover:shadow-md border border-gray-300"
                       >
                         Rate Product
                       </button>
@@ -626,7 +626,7 @@ const ProductDetails = () => {
                       open={open}
                       onClose={handleDialogClose}
                     >
-                      <DialogTitle className="border-b">
+                      <DialogTitle className="border-b border-gray-300">
                         Submit Review
                       </DialogTitle>
                       <DialogContent className="flex flex-col m-1 gap-4">
@@ -663,7 +663,7 @@ const ProductDetails = () => {
                       </DialogActions>
                     </Dialog>
 
-                    <div className="flex items-center border-b">
+                    <div className="flex items-center border-b border-gray-300">
                       <h1 className="px-6 py-3 text-3xl font-semibold">
                         {product?.ratings?.toFixed(1)} <StarIcon />
                       </h1>
@@ -676,7 +676,7 @@ const ProductDetails = () => {
                       ? reviews?.reviews
                           ?.map((rev, i) => (
                             <div
-                              className="flex flex-col gap-2 py-4 px-6 border-b"
+                              className="flex flex-col gap-2 py-4 px-6 border-b border-gray-300"
                               key={i}
                             >
                               <Rating
@@ -697,7 +697,7 @@ const ProductDetails = () => {
                           ?.slice(-3)
                           .map((rev, i) => (
                             <div
-                              className="flex flex-col gap-2 py-4 px-6 border-b"
+                              className="flex flex-col gap-2 py-4 px-6 border-b border-gray-300"
                               key={i}
                             >
                               <Rating

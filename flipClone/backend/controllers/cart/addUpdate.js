@@ -41,7 +41,6 @@ export const addToCartController = async (req, res, next) => {
                 totalItems: 1,
             });
             let cart = await newCart.save();
-            await cart.populate("items.productId");
             return response(res, 201, {
                 success: true,
                 message: "New Cart Created and Item Added to Cart",
@@ -63,7 +62,6 @@ export const addToCartController = async (req, res, next) => {
                 cart.totalItems = newTotalItems;
 
                 await cart.save();
-                await cart.populate("items.productId");
                 return response(res, 200, {
                     success: true, 
                     message: "Cart updated successfully",
@@ -77,7 +75,6 @@ export const addToCartController = async (req, res, next) => {
                 cart.totalItems = newTotalItems;
 
                 await cart.save();
-                await cart.populate("items.productId");
 
                 return response(res, 200, {
                     success: true, 
@@ -129,6 +126,7 @@ export const decQuantityController = async(req, res, next) => {
             let item = cart.items[itemIndex];
 
             let newTotalPrice = cart.totalPrice - item.price;
+            let newTotalDiscountPrice = cart.totalDiscountPrice - item.discountPrice;
             let newTotalItems = cart.totalItems - 1;
 
             if (itemIndex > -1 ) {
@@ -136,6 +134,7 @@ export const decQuantityController = async(req, res, next) => {
                 if (item.quantity > 0 ){
                     item.quantity -= 1 
                     cart.totalPrice = newTotalPrice;
+                    cart.totalDiscountPrice = newTotalDiscountPrice;
                     cart.totalItems = newTotalItems;
                 }else{
                     return 

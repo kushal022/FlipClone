@@ -32,6 +32,9 @@ export const saveForLaterController = async (req, res, next) => {
       (sum, item) => sum + item.price * item.quantity, // review for later
       0
     );
+    cart.totalDiscountPrice = cart.items.reduce(
+      (sum, item) => sum + item.discountPrice * item.quantity, 0
+    );
 
     await cart.save();
 
@@ -75,6 +78,10 @@ export const moveToCartController = async (req, res, next) => {
       (sum, item) => sum + item.price * item.quantity,
       0
     );
+    cart.totalDiscountPrice = cart.items.reduce(
+      (sum, item) => sum + item.discountPrice * item.quantity,
+      0
+    );
 
     await cart.save();
 
@@ -86,7 +93,7 @@ export const moveToCartController = async (req, res, next) => {
   } catch (error) {
     next(createError(500, error, "Error moving item to cart"));
   }
-};
+}; 
 
 // REMOVE FROM SAVE FOR LATER
 export const removeSavedItemController = async (req, res, next) => {

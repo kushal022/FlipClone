@@ -42,7 +42,7 @@ const CartItem = ({ product, inCart }) => {
   };
 
   return (
-    <div className="flex flex-col gap-3 py-5 pl-2 sm:pl-6 border-b overflow-hidden">
+    <div className="flex flex-col gap-3 py-5 pl-2 sm:pl-6 border-b border-gray-300 overflow-hidden">
       <Link
         to={`/product/${product?.productId}`}
         className="flex flex-col sm:flex-row gap-5 items-stretch w-full "

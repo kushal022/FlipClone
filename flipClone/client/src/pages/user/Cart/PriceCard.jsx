@@ -2,10 +2,10 @@ import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 
 const PriceCard = ({ cartItems, totalItems }) => {
   return (
-    <div className="flex sticky top-16 sm:h-screen flex-col sm:w-4/12 sm:px-1">
+    <div className="flex w-full sticky top-16 sm:h-screen flex-col sm:w-4/12 sm:px-1">
       {/* <!-- nav tiles --> */}
       <div className="flex flex-col bg-white rounded-sm shadow">
-        <h1 className="px-6 py-3 border-b font-medium text-gray-500">
+        <h1 className="px-6 py-3 border-b border-gray-300 font-medium text-gray-500">
           PRICE DETAILS
         </h1>
 
@@ -17,7 +17,7 @@ const PriceCard = ({ cartItems, totalItems }) => {
               {(cartItems &&
                 cartItems
                   .reduce(
-                    (sum, item) => sum + item.discountPrice * item.quantity,
+                    (sum, item) => sum + item.price * item.quantity,
                     0
                   )
                   .toLocaleString()) ||
@@ -26,7 +26,7 @@ const PriceCard = ({ cartItems, totalItems }) => {
           </p>
           <p className="flex justify-between">
             Discount{" "}
-            <span className="text-primary-green">
+            <span className="text-green-600">
               - ₹
               {cartItems &&
                 cartItems
@@ -44,7 +44,7 @@ const PriceCard = ({ cartItems, totalItems }) => {
             Delivery Charges <span className="text-primary-green">FREE</span>
           </p>
 
-          <div className="border border-dashed"></div>
+          <div className="border border-dashed border-gray-300"></div>
           <p className="flex justify-between text-lg font-medium">
             Total Amount{" "}
             <span>
@@ -58,9 +58,9 @@ const PriceCard = ({ cartItems, totalItems }) => {
                   .toLocaleString() || 0}
             </span>
           </p>
-          <div className="border border-dashed"></div>
+          <div className="border border-dashed border-gray-300"></div>
 
-          <p className="font-medium text-primaryGreen">
+          <p className="font-medium text-green-600">
             You will save ₹
             {cartItems &&
               cartItems

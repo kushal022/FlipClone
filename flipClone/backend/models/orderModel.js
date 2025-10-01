@@ -19,6 +19,9 @@ const orderItemSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    discountPrice: {
+      type: Number,
+    },
     quantity: {
       type: Number,
       required: true,
@@ -41,7 +44,7 @@ const orderSchema = new mongoose.Schema(
       fullName: { type: String, required: true },
       phone: { type: String, required: true },
       street: { type: String, required: true },
-      landmark: { type: String, required: true },
+      landmark: { type: String, required: false },
       addressType:{type: String, enum: ["Home","Work","Other"], require: true},
       city: { type: String, required: true },
       state: { type: String, required: true },
@@ -54,34 +57,30 @@ const orderSchema = new mongoose.Schema(
     shippingPrice: { type: Number, required: true, default: 0 },
     totalPrice: { type: Number, required: true },
 
-    orderStatus: {
-      type: String,
-      enum: ["Pending", "Processing", "Order Placed", "Shipped", "Delivered", "Cancelled"],
-      default: "Pending",
-    },
+    
 //---------------------------
+    cashfreeOrderId: { type: String },
+
     paymentMethod: {
-      type: String,
-      enum: ["COD", "Card", "UPI", "NetBanking"],
-    //   required: true,
-    },
-    paymentResult: {
-      paymentId: String, // from Stripe/PayPal/UPI
-      status: String,
-      update_time: String,
-      email_address: String,
+      type: Object,
+      // enum: ["COD", "Card", "UPI", "NetBanking"],
+      // required: true,
     },
 
-    cashfreeOrderId: { type: String },
     paymentStatus: { type: String, default: "PENDING" }, // PENDING / PAID / FAILED
     paymentInfo: { type: Object }, // store payment response or verification details
 
     isPaid: { type: Boolean, default: false },
     paidAt: { type: Date },
-
+//--------------------------------------
+    orderStatus: {
+      type: String,
+      enum: ["Pending", "Processing","Confirmed", "Order Placed", "Shipped", "Delivered", "Cancelled"],
+      default: "Pending",
+    },
+//--------------------------------------------
     isDelivered: { type: Boolean, default: false },
     deliveredAt: { type: Date },
-
     
   },
   { timestamps: true }

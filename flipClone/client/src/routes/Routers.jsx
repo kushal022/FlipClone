@@ -52,6 +52,7 @@ const Routers = () => {
                 <Route path=":id/orders" element={<Orders />} />
                 <Route path="place-order" element={<PlaceOrder />} />
                 <Route path="place-order/checkout" element={<Checkout />} />
+                <Route path="payment/success" element={<OrderSuccess />} />
             </Route>
 
             <Route path="/admin" element={<AdminRoute />}>

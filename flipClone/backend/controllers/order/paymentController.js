@@ -32,7 +32,7 @@ export const createCashfreeOrder = async (req, res, next) => {
       customerAlternativeEmail,
       customerPhone,
     } = req.body;
-
+//  console.log(orderItems)
     if (!orderItems || !orderAmount) {
       return res.status(400).json({ success: false, message: "Missing order data" });
     }
@@ -64,8 +64,9 @@ export const createCashfreeOrder = async (req, res, next) => {
         customer_email: customerEmail || "",
       },
       order_meta: {
-        return_url: `${FRONTEND_URL}/payment/success?order_id=${orderId}`,
-        notify_url: `http://localhost:8080/api/v1/order/cashfree/webhook`
+        return_url: `${FRONTEND_URL}/user/payment/success?order_id=${orderId}`,
+        notify_url: `https://glory-hear-howard-fee.trycloudflare.com/api/v1/order/cashfree/webhook`
+        // notify_url: `http://localhost:8080/api/v1/order/cashfree/webhook`
         // payment_methods: "cc,dc,upi"
       },
     };

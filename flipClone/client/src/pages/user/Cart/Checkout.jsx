@@ -77,6 +77,7 @@ const Checkout = () => {
   }
 
   return (
+    <div className="w-full pt-8 md:pt-0">
     <Box sx={{ maxWidth: 500, margin: "0 auto", p: 2 }}>
          
       <Card elevation={3}>
@@ -235,7 +236,7 @@ const Checkout = () => {
           </Box>
         </CardContent>
       </Card>
-    </Box>
+    </Box></div>
   );
 };
 

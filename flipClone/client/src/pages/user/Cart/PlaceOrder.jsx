@@ -13,13 +13,19 @@ import CartItem from "./CartItem";
 import Cart from "./Cart";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Checkout from "./Checkout";
+import { useEffect } from "react";
 
 const DeliveryAddressForm = () => {
   const { cartItem } = useSelector((state) => state.cart);
   const auth = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const [ searchParams ] = useSearchParams();
+  const productId = searchParams.get("id");
+  const [loading, setLoading ] = useState(false);
+  const [product, setProduct ] = useState(null);
+
   const [addNewAddress, setAddNewAddress] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [email, setEmail ] = useState('')
@@ -27,14 +33,28 @@ const DeliveryAddressForm = () => {
   //Session:
   const [ sessionId, setSessionId ] = useState(null);
 
+  // If single item buy directly without added in cart then order item will be this:
+  let orderItem ;
+  if (product) {
+    orderItem = {
+    productId: product._id,
+    name: product.name,
+    image: product.images[0].url,
+    price: product.price,
+    discountPrice: product.discountPrice,
+    quantity: 1,
+
+  }
+  }
+
   //?PAYMENT USING CASH-FREE PAYMENT GATEWAY: Create session
   const handlePayment = async () => {
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}/api/v1/order/cashfree/create-order`,
         {
-          orderItems: cartItem.items,
-          orderAmount: cartItem.totalDiscountPrice,
+          orderItems: orderItem || cartItem.items ,
+          orderAmount: product?.discountPrice || cartItem.totalDiscountPrice ,
           shippingCharge: 0,
           customerName: auth.user?.fname + " " + auth.user?.lname,
           customerEmail: auth?.user?.email,
@@ -76,10 +96,47 @@ const DeliveryAddressForm = () => {
   // Redirect to checkout page:
   if (sessionId) {
     // return <Checkout sessionId={sessionId} total={cartItem.totalDiscountPrice} />;
-    navigate(`/user/place-order/checkout?id=${sessionId}&total=${cartItem.totalDiscountPrice}`)
+    navigate(`/user/place-order/checkout?id=${sessionId}&total=${cartItem.totalDiscountPrice || product?.discountPrice}`)
   }
 
-
+  //*fetch product details
+    useEffect(() => {
+      const fetchProduct = async () => {
+        try {
+          setLoading(true);
+          const res = await axios.get(
+            `${import.meta.env.VITE_SERVER_URL}/api/v1/product/${productId}`
+          );
+          // console.log(res.data.product);
+          const product = res.data.data;
+          if (res.data.success === true) {
+            setProduct(product);
+          }
+          setLoading(false);
+        } catch (error) {
+          console.error("Error:", error);
+          setLoading(false);
+          // product not found
+          error.response?.status === 404 &&
+            toast.error("Product Not Found!", {
+              style: {
+                top: "40px",
+              },
+            });
+  
+          //server error
+          error.response?.status === 500 &&
+            toast.error("Something went wrong! Please try after sometime.", {
+              style: {
+                top: "40px",
+              },
+            });
+        }
+      };
+      if (productId){
+        fetchProduct();
+      }
+    }, [productId]);
 
   return (
     <>
@@ -166,12 +223,15 @@ const DeliveryAddressForm = () => {
 
             {/* <!-- cart items container --> */}
             {selectedAddress != null && <div className="flex flex-col shadow bg-white">
-              {cartItem.items == undefined || cartItem?.items?.length == 0 ? (
+              {product == null && (cartItem.items == undefined || cartItem?.items?.length == 0 ? (
                 <EmptyCart />
               ) : (
                 cartItem?.items?.map((item, i) => (
                   <CartItem product={item} inCart={true} key={i} />
                 ))
+              ))}
+              {product !== null && (
+                <CartItem product={product} />
               )}
             </div>}
           </section>
@@ -196,6 +256,7 @@ const DeliveryAddressForm = () => {
         </main>
         {/* --------------- RIGHT SECTION - PRICE DETAILS --------------*/}
         <PriceCard
+          product={product}
           cartItems={cartItem?.items}
           totalItems={cartItem.totalItems}
         />

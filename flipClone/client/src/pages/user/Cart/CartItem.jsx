@@ -6,8 +6,8 @@ import { useDispatch } from "react-redux";
 import { addToCart, decQuantity, removeFromCart } from "../../../redux/asyncThunk/cart";
 import { addToSaveForLater } from "../../../redux/asyncThunk/saveForLater";
 
-const CartItem = ({ product, inCart }) => {
-  // console.log('Product id: ', product)
+const CartItem = ({ product, inCart = false }) => {
+  console.log('Product id: ', product)
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(product?.quantity);
   
@@ -52,7 +52,7 @@ const CartItem = ({ product, inCart }) => {
           <img
             draggable="false"
             className="h-full w-full object-contain"
-            src={product?.image}
+            src={product?.image || product?.images[0].url}
             alt={product?.name}
           />
         </div>
@@ -69,7 +69,7 @@ const CartItem = ({ product, inCart }) => {
                   : product?.name}
               </p>
               <span className="text-sm text-gray-500">
-                Seller: {product?.brandName}
+                Seller: {product?.brandName || product.brand.name}
               </span>
             </div>
 
@@ -86,13 +86,13 @@ const CartItem = ({ product, inCart }) => {
           {/* <!-- price desc --> */}
           <div className="flex items-baseline gap-2 text-xl font-medium">
             <span className="text-sm text-gray-500 line-through font-normal">
-              ₹{(product?.price * product?.quantity).toLocaleString()}
+              ₹{product?.quantity ? (product?.price * product?.quantity).toLocaleString() : product?.price}
             </span>
             <span>
-              ₹{(product?.discountPrice * product?.quantity).toLocaleString()}
+              ₹{product?.quantity ? (product?.discountPrice * product?.quantity).toLocaleString() : product?.discountPrice}
             </span>
 
-            <span className="text-sm font-[600] text-primaryGreen">
+            <span className="text-sm font-[600] text-green-500">
               {getDiscount(product?.price, product?.discountPrice)}
               %&nbsp;off
             </span>
@@ -106,23 +106,25 @@ const CartItem = ({ product, inCart }) => {
       <div className="flex justify-between pr-4 sm:pr-0 sm:justify-start sm:gap-6">
         {/* <!-- quantity --> */}
         <div className="flex gap-2 items-center justify-between w-[130px]">
-          <span
+          <button
+            disabled = {product?.quantity ? false : true }
             onClick={() => decreaseQuantity(product)}
             className="w-7 h-7 text-3xl font-light select-none bg-gray-50 rounded-full border flex items-center justify-center cursor-pointer hover:bg-gray-200"
           >
             <p>-</p>
-          </span>
+          </button>
           <input
             className="w-11 border outline-none text-center select-none rounded-sm py-0.5 text-gray-700 font-medium text-sm qtyInput"
-            value={quantity}
+            value={quantity || 1}
             disabled
           />
-          <span
+          <button
+            disabled = { product?.quantity ? false : true }
             onClick={() => increaseQuantity(product)}
             className="w-7 h-7 text-xl font-light select-none bg-gray-50 rounded-full border flex items-center justify-center cursor-pointer hover:bg-gray-200"
           >
             +
-          </span>
+          </button>
         </div>
         {/* <!-- quantity --> */}
 

@@ -162,11 +162,12 @@ const ProductDetails = () => {
 
   const buyNow = () => {
     if (!itemInCart) {
-      addToCartHandler();
+      // addToCartHandler();
     }
-    setTimeout(() => {
-      goToCart();
-    }, 500);
+    navigate(`/user/place-order?id=${productId}`)
+    // setTimeout(() => {
+    //   goToCart();
+    // }, 500);
   };
 
   //* Add to cart handler:

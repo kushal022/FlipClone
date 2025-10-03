@@ -240,7 +240,7 @@ const OrderDetails = () => {
                 <div className="mt-4">
                   <Link
                     to="#"
-                    className="inline-block bg-white py-2 px-4 text-primaryBlue uppercase rounded-sm text-sm font-semibold border border-gray-300 hover:bg-gray-50 transition-colors"
+                    className="inline-block bg-white py-2 px-4 text-blue-500 uppercase rounded-sm text-sm font-semibold border border-gray-300 hover:bg-gray-50 transition-colors"
                   >
                     Download Invoice
                   </Link>

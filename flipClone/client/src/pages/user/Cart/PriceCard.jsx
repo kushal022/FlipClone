@@ -4,7 +4,7 @@ const PriceCard = ({ product, cartItems, totalItems }) => {
   return (
     <>
       {product ? (
-        <div className="flex w-full sticky top-16 sm:h-screen flex-col sm:w-4/12 sm:px-1">
+        <div className="flex w-full lg:w-4/12 sticky top-16 sm:h-screen flex-col sm:px-1">
           {/* <!-- nav tiles --> */}
           <div className="flex flex-col bg-white rounded-sm shadow">
             <h1 className="px-6 py-3 border-b border-gray-300 font-medium text-gray-500">
@@ -52,7 +52,7 @@ const PriceCard = ({ product, cartItems, totalItems }) => {
           {/* <!-- nav tiles --> */}
         </div>
       ) : (
-        <div className="flex w-full sticky top-16 sm:h-screen flex-col sm:w-4/12 sm:px-1">
+        <div className="flex w-full lg:w-4/12 sticky top-16 sm:h-screen flex-col sm:px-1">
           {/* <!-- nav tiles --> */}
           <div className="flex flex-col bg-white rounded-sm shadow">
             <h1 className="px-6 py-3 border-b border-gray-300 font-medium text-gray-500">

@@ -123,8 +123,8 @@ const Checkout = () => {
             sx={{
               p: 2,
               mb: 3,
-              backgroundColor: "success.light",
-              color: "white",
+              // backgroundColor: "success.light",
+              color: "green",
               borderRadius: 2,
             }}
           >

@@ -71,13 +71,6 @@ const DeliveryAddressForm = () => {
         console.log("Did not get SessionId")
       }
       sessionId && setSessionId(sessionId);
-      // const { paymentLink } = res.data;
-      // if (paymentLink) {
-      //   window.location.href = paymentLink; // redirect to Cashfree-hosted checkout
-      // } else {
-      //   toast.error("Could not create payment link");
-      // }
-      
     } catch (err) {
       console.error(err);
       toast.error("Payment initiation failed");
@@ -96,7 +89,7 @@ const DeliveryAddressForm = () => {
   // Redirect to checkout page:
   if (sessionId) {
     // return <Checkout sessionId={sessionId} total={cartItem.totalDiscountPrice} />;
-    navigate(`/user/place-order/checkout?id=${sessionId}&total=${cartItem.totalDiscountPrice || product?.discountPrice}`)
+    navigate(`/user/place-order/checkout?id=${sessionId}&total=${product?.discountPrice || cartItem.totalDiscountPrice }`)
   }
 
   //*fetch product details
@@ -217,7 +210,7 @@ const DeliveryAddressForm = () => {
               <div className="w-full ">
                 <p
                   className={`w-full flex gap-3 px-6 p-3 font-bold uppercase bg-blue-500 text-white transition-all `}
-                > order summary </p>
+                > order summary {product == null ? '-Cart' : ''} </p>
               </div>
             </div>
 

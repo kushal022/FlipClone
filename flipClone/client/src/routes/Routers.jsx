@@ -49,7 +49,10 @@ const Routers = () => {
                 <Route path=":id/cart" element={<Cart />} />
                 <Route path="orders/order_details/:id" element={<OrderDetails />}/>
                 <Route path=":id/wishlist" element={<Wishlist />} />
+                
                 <Route path=":id/orders" element={<Orders />} />
+                <Route path="orders" element={<Orders />} />
+                <Route path="orders/order_details/:id" element={<OrderDetails />} />
                 <Route path="place-order" element={<PlaceOrder />} />
                 <Route path="place-order/checkout" element={<Checkout />} />
                 <Route path="payment/success" element={<OrderSuccess />} />

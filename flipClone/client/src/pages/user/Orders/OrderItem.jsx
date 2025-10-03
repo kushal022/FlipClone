@@ -4,6 +4,7 @@ import { formatDate } from "../../../utils/functions";
 
 const OrderItem = ({
   item,
+  index,
   orderId,
   orderStatus,
   createdAt,
@@ -75,8 +76,9 @@ const OrderItem = ({
     <Link
       to={`/user/orders/order_details/${orderId}`}
       className="flex flex-col sm:flex-row items-start bg-white border border-gray-300 rounded-lg gap-5 px-4 sm:px-6 py-4 hover:shadow-lg transition-shadow duration-200 mx-2 sm:mx-4 mb-4"
-    >
+    > 
       {/* Product Image */}
+      {/* <div className="bg-gray-400 text-gray-100 rounded w-8 h-8 p-1 flex items-center justify-center">{index}</div> */}
       <div className="w-full sm:w-28 h-20 flex-shrink-0">
         <img
           draggable="false"

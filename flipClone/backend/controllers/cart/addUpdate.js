@@ -131,13 +131,17 @@ export const decQuantityController = async(req, res, next) => {
 
             if (itemIndex > -1 ) {
                 // item exists in cart, update its quantity
-                if (item.quantity > 0 ){
+                if (item.quantity > 1 ){
                     item.quantity -= 1 
                     cart.totalPrice = newTotalPrice;
                     cart.totalDiscountPrice = newTotalDiscountPrice;
                     cart.totalItems = newTotalItems;
-                }else{
-                    return 
+                }else if (item.quantity == 1) {
+                    item.quantity = 0
+                    cart.totalPrice = newTotalPrice;
+                    cart.totalDiscountPrice = newTotalDiscountPrice;
+                    cart.totalItems = newTotalItems;
+                    cart.items = cart.items.filter(item => item.productId.toString() !== productId);
                 }
                 await cart.save();
                 return response(res, 200, {

@@ -3,6 +3,7 @@ import { createError } from "../../middleware/errorHandler.js"
 import { response } from "../../utils/response.js";
 import CartModel from "../../models/cartModel.js";
 import mongoose  from "mongoose";
+import { calculateCartTotals } from "../../utils/cart.utils.js";
 
 
 // Remove item from cart controller:
@@ -62,3 +63,82 @@ export const removeFromCartController = async (req, res, next) => {
         next(createError(500, "Error in removing item from cart!"))
     }
 }
+
+
+//-----------------------------
+
+export const removeFromCartController2 = async (req, res, next) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    const userId = req.user._id;
+    const { productId } = req.body;
+
+    if (!productId) {
+      await session.abortTransaction();
+      return response(res, 400, {
+        success: false,
+        message: "Product ID is required",
+        errorType: "validationError"
+      });
+    }
+
+    // Find cart
+    const cart = await CartModel.findOne({ user: userId });
+    if (!cart) {
+      await session.abortTransaction();
+      return response(res, 404, {
+        success: false,
+        message: "Cart not found",
+        errorType: "notFound"
+      });
+    }
+
+    const itemIndex = cart.items.findIndex(item => 
+      item.productId.toString() === productId
+    );
+
+    if (itemIndex === -1) {
+      await session.abortTransaction();
+      return response(res, 404, {
+        success: false,
+        message: "Item not found in cart",
+        errorType: "notFound"
+      });
+    }
+
+    // Remove item
+    const removedItem = cart.items.splice(itemIndex, 1)[0];
+
+    // Recalculate totals
+    const totals = calculateCartTotals(cart.items);
+    cart.totalPrice = totals.totalPrice;
+    cart.totalDiscountPrice = totals.totalDiscountPrice;
+    cart.totalItems = totals.totalItems;
+
+    await cart.save({ session });
+    await session.commitTransaction();
+
+    const populatedCart = await CartModel.findById(cart._id)
+      .populate('items.productId', 'name images price discountPrice stock')
+      .lean();
+
+    return response(res, 200, {
+      success: true,
+      message: 'Item removed from cart successfully',
+      data: populatedCart,
+      removedItem: {
+        productId: removedItem.productId,
+        name: removedItem.name,
+        quantity: removedItem.quantity
+      }
+    });
+
+  } catch (error) {
+    await session.abortTransaction();
+    next(createError(500,error, error.message || "Error in removing item from cart!"));
+  } finally {
+    session.endSession();
+  }
+};

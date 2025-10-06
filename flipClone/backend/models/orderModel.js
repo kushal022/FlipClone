@@ -8,6 +8,21 @@ const orderItemSchema = new mongoose.Schema(
       ref: "Product",
       required: true,
     },
+    stock: {
+      type: Number,
+      required: true,
+      min: 0,
+      default: 0,
+    },
+    brandName: {
+        type: String,
+        // required: true,
+    },
+    seller: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     name: {
       type: String,
       required: true,
@@ -26,6 +41,10 @@ const orderItemSchema = new mongoose.Schema(
       type: Number,
       required: true,
       min: 1,
+    },
+    saveForLater: {
+      type: Boolean,
+      default: false,
     },
   },
 );

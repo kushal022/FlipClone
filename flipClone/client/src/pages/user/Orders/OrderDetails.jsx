@@ -60,12 +60,13 @@ const OrderDetails = () => {
   const getActiveStep = () => {
     switch (orderStatus) {
       case "Delivered":
-        return 4;
+        return 5;
       case "Out For Delivery":
-        return 3;
+        return 4;
       case "Shipped":
-        return 2;
+        return 3;
       case "Processing":
+        return 2;
       case "Confirmed":
         return 1;
       default: // Pending

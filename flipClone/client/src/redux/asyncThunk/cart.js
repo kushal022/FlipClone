@@ -74,10 +74,10 @@ export const fetchCart = createAsyncThunk(
       });
 
       let cart = res.data.data
-      res.data.success === true && 
-      toast.success("Cart fetched successfully!");
-      res.data.success === false && 
-      toast.success(`${res.data.message}`);
+      // res.data.success === true && 
+      // toast.success("Cart fetched successfully!");
+      // res.data.success === false && 
+      // toast.success(`${res.data.message}`);
       return cart;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);

@@ -2,8 +2,9 @@
 
 
 import { useState, useRef, useEffect } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useLocation } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
+import logoWhite from "../../assets/images/logoWhite2.png";
 import { BiHomeSmile } from "react-icons/bi";
 import { LuCircleUserRound } from "react-icons/lu";
 import {
@@ -27,6 +28,7 @@ const Header = () => {
     const { user, isAdmin, token } = useSelector((state) => state.auth);
     const { cartItem } = useSelector(state => state.cart)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const location = useLocation();
 
     // toggle Dropdown 
     let closeTimeout;
@@ -47,26 +49,26 @@ const Header = () => {
 
 
   return (
-    <header>
+    <header className="relative z-30">
       <nav
-        className="h-15 px-4 md:px-[50px] w-full"
+        className={`fixed top-0 h-15 px-4 md:px-[50px] w-full shadow ${location.pathname === '/' ? 'bg-white' : 'bg-blue-500'}`}
       >
         <main className="flex items-center justify-center w-full flex-row ">
           {/* ---------------------primary section [logo + searchbar] */}
-          <section className=" flex items-center gap-4 w-full">
+          <section className=" flex items-center gap-4 w-full z-40">
               {/* logo */}
-              <Link to="/" className="w-60 h-15 flex items-center justify-center">
-                {/* <img src={logo} alt="logo" className="size-30 md:size-40 object-cover" /> */}LOGO
+              <Link to="/" className="w-60 h-15 flex items-center justify-center z-50">
+                <img src={location.pathname !== '/' ? logoWhite:logo} alt="logo" className="size-30 md:size-40 object-cover" />
               </Link>
-              <div  className='hidden md:block w-[100%]'><SearchBar /></div>
+              <div  className='hidden relative md:block w-[100%]'><SearchBar /></div>
           </section>
 
           {/*---------------- secondary section [account + cart ] */}
           <section className="flex items-center gap-[25px] md:gap-[50px] w-[70%] md:w-[30%] ">
             {/* Account */}
             <div
-              className={`flex items-center relative cursor-pointer group ${
-                user ? "hover:bg-slate-100" : "hover:bg-primaryBlue"
+              className={`flex items-center relative cursor-pointer group ${location.pathname === '/'? '':"text-white hover:text-black"}  ${
+                user ? "hover:bg-slate-100" : "hover:bg-blue-500"
               } rounded-md p-1`}
                 onMouseEnter={toggleDropdown}
                 onMouseLeave={closeDropdown}

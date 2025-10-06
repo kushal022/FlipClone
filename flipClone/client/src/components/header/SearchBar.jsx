@@ -14,7 +14,8 @@ const SearchBar = () => {
             const products = await axios.get(
                 `${baseUrl}/api/v1/product/search/${query}`
             );
-            setResults(products.data.slice(0, 6));
+            setResults(products.data.data);
+            console.log(products.data)
             setOpen(true);
         } catch (error) {
             console.error("Error searching for products:", error);
@@ -27,8 +28,6 @@ const SearchBar = () => {
     const handleInputChange = (e) => {
         const newQuery = e.target.value;
         setQuery(newQuery);
-
-        // Call the debouncedSearch function instead of handleSearch directly
         debouncedSearch(newQuery);
     };
 
@@ -40,6 +39,8 @@ const SearchBar = () => {
 
     //      return () => clearTimeout(delayDebounceFn);
     //  }, [query, handleSearch]);
+
+    console.log('results: ', results)
 
     return (
         <>
